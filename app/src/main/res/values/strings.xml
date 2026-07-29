@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Maintenance Reports</string>
+    <string name="action_admin">Manage Technicians</string>
+
+    <string name="home_title">Select a Section</string>
+    <string name="home_sub">Tap a section to start a new report</string>
+    <string name="sec_khayat">Tailoring</string>
+    <string name="sec_najjar">Carpentry</string>
+    <string name="sec_abwab">Doors</string>
+    <string name="sec_aluminum">Aluminum</string>
+    <string name="sec_kahraba">Electricity &amp; AC</string>
+    <string name="sec_muno">Miscellaneous</string>
+    <string name="recent_title">Recent Reports on This Device</string>
+    <string name="recent_empty">No reports yet</string>
+    <string name="recent_tech">Technician: %1$s</string>
+
+    <string name="back">Back</string>
+    <string name="report_for">Report</string>
+    <string name="report_serial_label">Report No.</string>
+    <string name="contract_no">Contract No.</string>
+    <string name="tent_size">Tent Size</string>
+    <string name="tent_size_hint">e.g. 10m x 6m</string>
+    <string name="agent">Agent</string>
+    <string name="agent_hint">Agent name</string>
+    <string name="date">Date</string>
+    <string name="location">Location</string>
+    <string name="gps_btn">Detect Location</string>
+    <string name="gps_none">Location not set yet</string>
+    <string name="gps_open_maps">Open in Google Maps</string>
+    <string name="loc_manual_hint">Or type the location manually</string>
+    <string name="tech_name">Technician Name</string>
+    <string name="tech_select_hint">Select from list</string>
+    <string name="tech_manual_option">Enter manually…</string>
+    <string name="tech_manual_hint">Type technician name</string>
+
+    <string name="faults_title">Faults &amp; Photos</string>
+    <string name="fault_label">Fault</string>
+    <string name="fault_desc_hint">Fault description</string>
+    <string name="repair_label">Repair Performed</string>
+    <string name="repair_hint">What was done</string>
+    <string name="photo_before">Before Photo</string>
+    <string name="photo_after">After Photo</string>
+    <string name="btn_camera">Camera</string>
+    <string name="btn_gallery">Gallery</string>
+    <string name="add_fault">+ Add Another Fault</string>
+    <string name="remove">Remove</string>
+
+    <string name="ac_title">AC Units</string>
+    <string name="ac_unit_label">AC Unit No.</string>
+    <string name="ac_unit_hint">AC unit number</string>
+    <string name="add_ac">+ Add Another Unit</string>
+    <string name="electrical_checklist_title">Electrical Inspection Checklist</string>
+    <string name="check_wiring">Wiring</string>
+    <string name="check_db">DB (Distribution Board)</string>
+    <string name="check_lighting">Lighting</string>
+    <string name="gas_pressure">Gas Pressure</string>
+    <string name="gas_pressure_hint">e.g. 65 psi</string>
+    <string name="voltage">Voltage</string>
+    <string name="voltage_hint">e.g. 220V</string>
+    <string name="cooling_temp">Cooling Temperature</string>
+    <string name="cooling_temp_hint">e.g. 18°C</string>
+
+    <string name="remaining_label">Remaining Faults / Notes</string>
+    <string name="remaining_hint">Write any remaining faults or notes</string>
+    <string name="signature">Technician Signature</string>
+    <string name="signature_customer">Customer Signature</string>
+    <string name="clear_sig">Clear Signature</string>
+    <string name="submit_btn">Finish Report &amp; Continue</string>
+
+    <string name="err_contract">Please enter the contract number</string>
+    <string name="err_tent">Please enter the tent size</string>
+    <string name="err_tech">Please select the technician name</string>
+    <string name="err_sig">Please add the signature</string>
+    <string name="gps_locating">Detecting location…</string>
+    <string name="gps_done">Location detected</string>
+    <string name="gps_failed">Could not detect location - enter it manually</string>
+    <string name="gps_permission_needed">Location permission is required</string>
+    <string name="camera_permission_needed">Camera permission is required</string>
+
+    <string name="success_title">Report Completed</string>
+    <string name="success_sub">Contract #%1$s - %2$s</string>
+    <string name="btn_wa_pdf">Send PDF via WhatsApp to Office (%1$s)</string>
+    <string name="btn_pdf_only">Download PDF Only</string>
+    <string name="btn_json">Download Data File (for archiving)</string>
+    <string name="btn_share">Share</string>
+    <string name="btn_wa_text">WhatsApp (text only)</string>
+    <string name="btn_new">+ New Report</string>
+    <string name="success_note">Note: the PDF file alone is enough for archiving. The "Send PDF via WhatsApp" button opens WhatsApp to send the report to the office (attach the file manually if it is not attached automatically). The data file (JSON) is an optional extra backup.</string>
+
+    <string name="toast_pdf_making">Generating PDF…</string>
+    <string name="toast_pdf_done">PDF saved</string>
+    <string name="toast_pdf_error">An error occurred while generating the PDF</string>
+    <string name="toast_json_done">Data file saved</string>
+    <string name="toast_send_error">An error occurred while sending</string>
+    <string name="toast_no_whatsapp">WhatsApp is not installed</string>
+
+    <string name="admin_title">Manage Technician Lists</string>
+    <string name="admin_phone_label">Office WhatsApp Number (to receive reports)</string>
+    <string name="admin_phone_hint">e.g. 0554972472</string>
+    <string name="admin_phone_save">Save Number</string>
+    <string name="toast_phone_saved">Office number saved</string>
+    <string name="toast_phone_invalid">Enter a valid WhatsApp number</string>
+    <string name="admin_section_label">Section</string>
+    <string name="admin_no_tech">No technicians in this section</string>
+    <string name="admin_code_hint">Employee ID</string>
+    <string name="admin_name_hint">Name</string>
+    <string name="admin_add">+ Add Technician</string>
+    <string name="toast_write_name">Enter the technician name</string>
+    <string name="admin_export">Export Technician List (to sync with other devices)</string>
+    <string name="admin_import">Import Technician List</string>
+    <string name="toast_import_ok">Imported successfully</string>
+    <string name="toast_invalid_file">Invalid file</string>
+    <string name="close">Close</string>
+
+    <string name="pdf_title">Maintenance &amp; Installation Report</string>
+</resources>

@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/bg">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:background="@color/brand"
+        android:padding="12dp"
+        android:elevation="4dp">
+
+        <Button
+            android:id="@+id/btnBack"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="38dp"
+            android:background="#26FFFFFF"
+            android:text="@string/back"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="13sp"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp" />
+
+        <TextView
+            android:id="@+id/txtSectionTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="10dp"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/txtSerial"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_badge"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:paddingTop="3dp"
+            android:paddingBottom="3dp"
+            android:textColor="#075985"
+            android:textSize="12sp" />
+    </LinearLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <!-- Basic info card -->
+            <LinearLayout style="@style/CardBlock">
+
+                <TextView style="@style/FieldLabel" android:layout_marginTop="0dp" android:text="@string/contract_no" android:textColor="@color/danger" />
+                <EditText android:id="@+id/inputContract" style="@style/FieldInput" android:inputType="text" android:hint="@string/contract_no" />
+
+                <TextView style="@style/FieldLabel" android:text="@string/tent_size" />
+                <EditText android:id="@+id/inputTent" style="@style/FieldInput" android:inputType="text" android:hint="@string/tent_size_hint" />
+
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginEnd="5dp" android:orientation="vertical">
+                        <TextView style="@style/FieldLabel" android:text="@string/agent" />
+                        <EditText android:id="@+id/inputAgent" style="@style/FieldInput" android:inputType="text" android:hint="@string/agent_hint" />
+                    </LinearLayout>
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginStart="5dp" android:orientation="vertical">
+                        <TextView style="@style/FieldLabel" android:text="@string/date" />
+                        <EditText android:id="@+id/inputDate" style="@style/FieldInput" android:inputType="none" android:focusable="false" android:clickable="true" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <TextView style="@style/FieldLabel" android:text="@string/location" />
+                <Button android:id="@+id/btnGps" style="@style/BtnOutline" android:layout_marginTop="0dp" android:text="@string/gps_btn" />
+                <LinearLayout android:id="@+id/gpsResultContainer" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:layout_marginTop="6dp" />
+                <EditText android:id="@+id/inputLocManual" style="@style/FieldInput" android:layout_marginTop="6dp" android:inputType="text" android:hint="@string/loc_manual_hint" />
+
+                <TextView style="@style/FieldLabel" android:text="@string/tech_name" android:textColor="@color/danger" />
+                <Spinner android:id="@+id/spinnerTech" android:layout_width="match_parent" android:layout_height="46dp" android:background="@drawable/bg_input" android:popupBackground="@color/white" />
+                <EditText android:id="@+id/inputTechManual" style="@style/FieldInput" android:layout_marginTop="6dp" android:inputType="text" android:hint="@string/tech_manual_hint" android:visibility="gone" />
+            </LinearLayout>
+
+            <!-- Faults / AC units / electrical checklist -->
+            <LinearLayout
+                android:id="@+id/dynamicContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" />
+
+            <!-- Remaining notes -->
+            <LinearLayout style="@style/CardBlock">
+                <TextView style="@style/FieldLabel" android:layout_marginTop="0dp" android:text="@string/remaining_label" />
+                <EditText android:id="@+id/inputRemaining" style="@style/FieldInput" android:minLines="3" android:gravity="top|start" android:inputType="textMultiLine" android:hint="@string/remaining_hint" />
+            </LinearLayout>
+
+            <!-- Technician signature -->
+            <LinearLayout style="@style/CardBlock">
+                <TextView style="@style/FieldLabel" android:layout_marginTop="0dp" android:text="@string/signature" android:textColor="@color/danger" />
+                <FrameLayout android:layout_width="match_parent" android:layout_height="160dp" android:background="@drawable/bg_signature">
+                    <com.tents.maintenance.ui.SignatureView android:id="@+id/sigTech" android:layout_width="match_parent" android:layout_height="match_parent" />
+                </FrameLayout>
+                <Button android:id="@+id/btnClearSigTech" style="@style/BtnSmallOutline" android:layout_marginTop="8dp" android:background="@drawable/bg_btn_secondary" android:textColor="@color/text_main" android:text="@string/clear_sig" />
+            </LinearLayout>
+
+            <!-- Customer signature -->
+            <LinearLayout style="@style/CardBlock">
+                <TextView style="@style/FieldLabel" android:layout_marginTop="0dp" android:text="@string/signature_customer" />
+                <FrameLayout android:layout_width="match_parent" android:layout_height="160dp" android:background="@drawable/bg_signature">
+                    <com.tents.maintenance.ui.SignatureView android:id="@+id/sigCustomer" android:layout_width="match_parent" android:layout_height="match_parent" />
+                </FrameLayout>
+                <Button android:id="@+id/btnClearSigCustomer" style="@style/BtnSmallOutline" android:layout_marginTop="8dp" android:background="@drawable/bg_btn_secondary" android:textColor="@color/text_main" android:text="@string/clear_sig" />
+            </LinearLayout>
+
+            <LinearLayout style="@style/CardBlock">
+                <Button android:id="@+id/btnSubmit" style="@style/BtnPrimary" android:layout_marginTop="0dp" android:text="@string/submit_btn" />
+            </LinearLayout>
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+</LinearLayout>

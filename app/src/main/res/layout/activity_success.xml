@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/bg">
+
+    <include layout="@layout/view_header" />
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <LinearLayout style="@style/CardBlock" android:gravity="center">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="✔"
+                    android:textSize="56sp"
+                    android:textColor="@color/ok" />
+                <TextView
+                    android:id="@+id/txtSuccessTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    android:textSize="19sp"
+                    android:textColor="@color/text_main"
+                    android:layout_marginTop="4dp" />
+                <TextView
+                    android:id="@+id/txtSuccessSub"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/muted"
+                    android:textSize="13sp" />
+                <TextView
+                    android:id="@+id/txtSerialBadge"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_badge"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp"
+                    android:paddingTop="4dp"
+                    android:paddingBottom="4dp"
+                    android:textColor="#075985"
+                    android:textSize="12sp"
+                    android:layout_marginTop="8dp" />
+            </LinearLayout>
+
+            <LinearLayout style="@style/CardBlock">
+                <Button android:id="@+id/btnWaPdf" style="@style/BtnPrimary" android:layout_marginTop="0dp" />
+                <Button android:id="@+id/btnPdf" style="@style/BtnOutline" android:text="@string/btn_pdf_only" />
+                <Button android:id="@+id/btnJson" style="@style/BtnOutline" android:text="@string/btn_json" />
+                <Button android:id="@+id/btnShare" style="@style/BtnSecondary" android:text="@string/btn_share" />
+                <Button android:id="@+id/btnWaText" style="@style/BtnSecondary" android:text="@string/btn_wa_text" />
+                <Button android:id="@+id/btnNew" style="@style/BtnSecondary" android:text="@string/btn_new" />
+            </LinearLayout>
+
+            <LinearLayout style="@style/CardBlock">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/success_note"
+                    android:textColor="@color/muted"
+                    android:textSize="12sp" />
+            </LinearLayout>
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+</LinearLayout>

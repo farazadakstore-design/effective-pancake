@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/bg">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:background="@color/brand"
+        android:padding="12dp"
+        android:elevation="4dp">
+
+        <Button
+            android:id="@+id/btnBack"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="38dp"
+            android:background="#26FFFFFF"
+            android:text="@string/back"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="13sp"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="10dp"
+            android:text="@string/admin_title"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <LinearLayout style="@style/CardBlock">
+                <TextView style="@style/FieldLabel" android:layout_marginTop="0dp" android:text="@string/admin_phone_label" />
+                <EditText android:id="@+id/inputPhone" style="@style/FieldInput" android:inputType="phone" android:hint="@string/admin_phone_hint" />
+                <Button android:id="@+id/btnSavePhone" style="@style/BtnSmallOutline" android:layout_marginTop="8dp" android:text="@string/admin_phone_save" />
+            </LinearLayout>
+
+            <LinearLayout style="@style/CardBlock">
+                <TextView style="@style/FieldLabel" android:layout_marginTop="0dp" android:text="@string/admin_section_label" />
+                <Spinner android:id="@+id/spinnerSection" android:layout_width="match_parent" android:layout_height="46dp" android:background="@drawable/bg_input" />
+
+                <LinearLayout
+                    android:id="@+id/techListContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginTop="10dp" />
+
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginTop="8dp">
+                    <EditText android:id="@+id/inputCode" style="@style/FieldInput" android:layout_width="0dp" android:layout_weight="1" android:layout_marginEnd="5dp" android:inputType="text" android:hint="@string/admin_code_hint" />
+                    <EditText android:id="@+id/inputName" style="@style/FieldInput" android:layout_width="0dp" android:layout_weight="1" android:layout_marginStart="5dp" android:inputType="text" android:hint="@string/admin_name_hint" />
+                </LinearLayout>
+                <Button android:id="@+id/btnAddTech" style="@style/BtnPrimary" android:text="@string/admin_add" />
+            </LinearLayout>
+
+            <LinearLayout style="@style/CardBlock">
+                <Button android:id="@+id/btnExport" style="@style/BtnOutline" android:layout_marginTop="0dp" android:text="@string/admin_export" />
+                <TextView style="@style/FieldLabel" android:text="@string/admin_import" />
+                <Button android:id="@+id/btnImport" style="@style/BtnSecondary" android:text="@string/admin_import" />
+            </LinearLayout>
+
+            <LinearLayout style="@style/CardBlock">
+                <Button android:id="@+id/btnClose" style="@style/BtnSecondary" android:layout_marginTop="0dp" android:text="@string/close" />
+            </LinearLayout>
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+</LinearLayout>
