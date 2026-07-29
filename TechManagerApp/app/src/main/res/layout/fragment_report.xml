@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="12dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_card"
+            android:orientation="vertical"
+            android:padding="14dp">
+
+            <TextView android:id="@+id/tvReportTitle" android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp" android:textColor="@color/primary_dark" android:textSize="15sp" android:textStyle="bold" />
+
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
+                <EditText android:id="@+id/etDate" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"
+                    android:background="@drawable/bg_edittext" android:clickable="true" android:focusable="false" android:padding="9dp" android:textSize="13sp" />
+                <EditText android:id="@+id/etSupervisor" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"
+                    android:layout_marginStart="8dp" android:background="@drawable/bg_edittext" android:padding="9dp" android:textSize="13sp" />
+            </LinearLayout>
+
+            <EditText android:id="@+id/etSection" android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:layout_marginTop="8dp" android:background="@drawable/bg_edittext" android:padding="9dp" android:textSize="13sp" />
+            <EditText android:id="@+id/etContractNo" android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:layout_marginTop="8dp" android:background="@drawable/bg_edittext" android:padding="9dp" android:textSize="13sp" />
+
+            <TextView android:id="@+id/tvWorkersTitle" android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:layout_marginTop="14dp" android:textColor="@color/primary_dark" android:textSize="14sp" android:textStyle="bold" />
+            <TextView android:id="@+id/tvBreakInfo" android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:layout_marginBottom="6dp" android:textColor="@color/muted" android:textSize="11sp" />
+
+            <androidx.recyclerview.widget.RecyclerView android:id="@+id/rvWorkers" android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:nestedScrollingEnabled="false" />
+
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="4dp" android:orientation="horizontal">
+                <Button android:id="@+id/btnAddWorker" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"
+                    android:background="@drawable/btn_secondary" android:textAllCaps="false" android:textSize="12sp" android:paddingTop="8dp" android:paddingBottom="8dp" />
+                <Button android:id="@+id/btnAddAllAvailable" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"
+                    android:layout_marginStart="6dp" android:background="@drawable/btn_secondary" android:textAllCaps="false" android:textSize="12sp" android:paddingTop="8dp" android:paddingBottom="8dp" />
+            </LinearLayout>
+
+            <TextView android:id="@+id/tvAvailTitle" android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:layout_marginTop="16dp" android:textColor="@color/primary_dark" android:textSize="14sp" android:textStyle="bold" />
+
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="6dp" android:orientation="horizontal">
+                <Spinner android:id="@+id/spAvail" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"
+                    android:background="@drawable/bg_edittext" />
+                <Button android:id="@+id/btnAddAvail" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="6dp"
+                    android:background="@drawable/btn_secondary" android:textAllCaps="false" android:textSize="12sp" />
+            </LinearLayout>
+
+            <com.google.android.material.chip.ChipGroup android:id="@+id/chipAvail" android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:layout_marginTop="8dp" />
+
+            <TextView android:id="@+id/tvDonePrevLabel" android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:layout_marginTop="12dp" android:textColor="@color/muted" android:textSize="12sp" android:textStyle="bold" />
+            <EditText android:id="@+id/etDonePrev" android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:layout_marginTop="4dp" android:background="@drawable/bg_edittext" android:gravity="top|start" android:lines="3" android:minLines="3" android:padding="9dp" android:textSize="13sp" />
+
+            <TextView android:id="@+id/tvTodoLabel" android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:layout_marginTop="10dp" android:textColor="@color/muted" android:textSize="12sp" android:textStyle="bold" />
+            <EditText android:id="@+id/etTodo" android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:layout_marginTop="4dp" android:background="@drawable/bg_edittext" android:gravity="top|start" android:lines="3" android:minLines="3" android:padding="9dp" android:textSize="13sp" />
+
+            <TextView android:id="@+id/tvMaterialsLabel" android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:layout_marginTop="10dp" android:textColor="@color/muted" android:textSize="12sp" android:textStyle="bold" />
+            <EditText android:id="@+id/etMaterials" android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:layout_marginTop="4dp" android:background="@drawable/bg_edittext" android:gravity="top|start" android:lines="2" android:minLines="2" android:padding="9dp" android:textSize="13sp" />
+
+            <TextView android:id="@+id/tvReportMsg" android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:layout_marginTop="10dp" android:background="@drawable/bg_msg_ok" android:padding="9dp" android:textStyle="bold" android:visibility="gone" />
+
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="10dp" android:orientation="horizontal">
+                <Button android:id="@+id/btnSaveReport" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"
+                    android:background="@drawable/btn_primary" android:textAllCaps="false" android:textColor="@color/white" android:textStyle="bold" android:paddingTop="10dp" android:paddingBottom="10dp" android:textSize="12.5sp" />
+                <Button android:id="@+id/btnWa" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginStart="6dp"
+                    android:background="@drawable/btn_wa" android:enabled="false" android:textAllCaps="false" android:textColor="@color/white" android:textStyle="bold" android:paddingTop="10dp" android:paddingBottom="10dp" android:textSize="12sp" />
+            </LinearLayout>
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="6dp" android:orientation="horizontal">
+                <Button android:id="@+id/btnWord" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"
+                    android:background="@drawable/btn_word" android:enabled="false" android:textAllCaps="false" android:textColor="@color/white" android:textStyle="bold" android:paddingTop="10dp" android:paddingBottom="10dp" android:textSize="12.5sp" />
+                <Button android:id="@+id/btnSendText" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginStart="6dp"
+                    android:background="@drawable/btn_text_send" android:enabled="false" android:textAllCaps="false" android:textColor="@color/white" android:textStyle="bold" android:paddingTop="10dp" android:paddingBottom="10dp" android:textSize="12.5sp" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="12dp"
+            android:background="@drawable/bg_card" android:orientation="vertical" android:padding="14dp">
+            <TextView android:id="@+id/tvPrevReportsTitle" android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:layout_marginBottom="6dp" android:textColor="@color/primary_dark" android:textSize="15sp" android:textStyle="bold" />
+            <androidx.recyclerview.widget.RecyclerView android:id="@+id/rvPrevReports" android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:nestedScrollingEnabled="false" />
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

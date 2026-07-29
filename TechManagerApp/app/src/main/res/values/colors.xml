@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="primary">#1E6F5C</color>
+    <color name="primary_dark">#154F42</color>
+    <color name="light">#E8F5F1</color>
+    <color name="accent">#27AE60</color>
+    <color name="danger">#E74C3C</color>
+    <color name="warn">#F39C12</color>
+    <color name="blueish">#2980B9</color>
+    <color name="bg">#F4F6F7</color>
+    <color name="card">#FFFFFF</color>
+    <color name="border">#D0D7D4</color>
+    <color name="text_main">#222222</color>
+    <color name="muted">#666666</color>
+    <color name="white">#FFFFFF</color>
+    <color name="wa_green">#25D366</color>
+    <color name="word_blue">#2B579A</color>
+
+    <color name="badge_avail_bg">#D5F5E3</color>
+    <color name="badge_avail_text">#1A7A47</color>
+    <color name="badge_onsite_bg">#D6EAF8</color>
+    <color name="badge_onsite_text">#1A5276</color>
+    <color name="badge_vac_bg">#FEF9E7</color>
+    <color name="badge_vac_text">#7D6608</color>
+    <color name="badge_sick_bg">#FDE8E8</color>
+    <color name="badge_sick_text">#922B21</color>
+    <color name="badge_perm_bg">#E8DAEF</color>
+    <color name="badge_perm_text">#6C3483</color>
+    <color name="badge_absent_bg">#EAECEE</color>
+    <color name="badge_absent_text">#4A4A4A</color>
+</resources>
