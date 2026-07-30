@@ -24,7 +24,7 @@ jobs:
       - name: Sync Capacitor Android project
         run: npx cap sync android
 
-      - name: name: Set up JDK 21
+      - name: Set up JDK 21
         uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
