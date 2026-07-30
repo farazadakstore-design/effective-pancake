@@ -1,0 +1,1920 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#1e6f5c">
+<title>فنيين - موبايل</title>
+<style>
+:root{
+  --primary:#1e6f5c;--dark:#154f42;--light:#e8f5f1;--accent:#27ae60;
+  --danger:#e74c3c;--warn:#f39c12;--blue:#2980b9;
+  --bg:#f4f6f7;--card:#fff;--border:#d0d7d4;--text:#222;--muted:#666;
+  --radius:10px;--shadow:0 2px 8px rgba(0,0,0,0.08);
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:"Segoe UI",Tahoma,Arial,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
+/* ─── LOGIN ─── */
+#login-screen{display:flex;align-items:center;justify-content:center;min-height:100vh;padding:20px;}
+.login-box{background:var(--card);border-radius:14px;box-shadow:0 4px 24px rgba(0,0,0,0.13);padding:28px 24px;width:100%;max-width:400px;}
+.login-logo{text-align:center;font-size:2.2rem;margin-bottom:8px;}
+.login-title{text-align:center;font-size:1.2rem;font-weight:700;color:var(--dark);margin-bottom:4px;}
+.login-sub{text-align:center;font-size:0.85rem;color:var(--muted);margin-bottom:18px;}
+.login-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;}
+.login-card{background:var(--light);border:2px solid transparent;border-radius:10px;padding:14px 10px;text-align:center;cursor:pointer;transition:all .15s;}
+.login-card:hover,.login-card.sel{border-color:var(--primary);background:#c8ece2;}
+.login-card .icon{font-size:1.6rem;}
+.login-card .name{font-size:0.85rem;font-weight:700;margin-top:4px;color:var(--dark);}
+.pw-area{margin-top:12px;}
+.pw-area input{width:100%;border:1.5px solid var(--border);border-radius:8px;padding:10px 12px;font-size:1rem;font-family:inherit;text-align:center;letter-spacing:4px;}
+.pw-area input:focus{outline:none;border-color:var(--primary);}
+.login-btn{width:100%;margin-top:10px;padding:11px;background:var(--primary);color:#fff;border:none;border-radius:8px;font-size:1rem;font-weight:700;font-family:inherit;cursor:pointer;}
+.login-btn:hover{background:var(--dark);}
+.login-err{color:var(--danger);font-size:0.85rem;text-align:center;margin-top:8px;min-height:20px;}
+.lang-btn{display:block;margin:0 auto 10px;background:none;border:1px solid var(--border);border-radius:6px;padding:4px 12px;font-size:0.82rem;cursor:pointer;color:var(--muted);}
+/* ─── APP ─── */
+#app-screen{display:none;flex-direction:column;min-height:100vh;}
+header{background:var(--primary);color:#fff;padding:12px 14px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,0.18);}
+.brand{font-size:1rem;font-weight:700;}
+.brand small{display:block;font-size:0.72rem;opacity:.8;font-weight:400;}
+.hdr-right{display:flex;align-items:center;gap:8px;}
+.hdr-btn{background:rgba(255,255,255,0.18);border:none;color:#fff;border-radius:6px;padding:5px 10px;font-size:0.8rem;cursor:pointer;font-family:inherit;}
+.hdr-btn:hover{background:rgba(255,255,255,0.28);}
+nav{background:var(--dark);display:flex;overflow-x:auto;}
+nav button{flex:1;min-width:80px;padding:10px 6px;background:none;border:none;color:rgba(255,255,255,0.7);font-size:0.85rem;font-family:inherit;cursor:pointer;border-bottom:3px solid transparent;white-space:nowrap;}
+nav button.active{color:#fff;border-bottom-color:#2ecc71;}
+.page{display:none;padding:12px;max-width:700px;margin:0 auto;width:100%;}
+.page.active{display:block;}
+.card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:14px;margin-bottom:12px;}
+.card-title{font-size:.92rem;font-weight:700;color:var(--dark);margin-bottom:10px;display:flex;align-items:center;gap:6px;}
+/* ─── STATS ─── */
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px;}
+.stat{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:12px 8px;text-align:center;}
+.stat .num{font-size:1.7rem;font-weight:700;color:var(--primary);}
+.stat .lbl{font-size:0.72rem;color:var(--muted);}
+/* ─── MEMBERS ─── */
+.member-list{display:flex;flex-direction:column;gap:6px;}
+.member-row{display:flex;align-items:center;gap:10px;background:var(--bg);border-radius:8px;padding:9px 11px;border:1.5px solid var(--border);}
+.member-row .avatar{width:34px;height:34px;border-radius:50%;background:var(--light);display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0;}
+.member-info{flex:1;min-width:0;}
+.member-name{font-size:0.9rem;font-weight:600;}
+.member-sub{font-size:0.73rem;color:var(--muted);}
+.member-badges{display:flex;gap:4px;flex-wrap:wrap;margin-top:3px;}
+.badge{display:inline-block;padding:2px 7px;border-radius:999px;font-size:0.72rem;font-weight:600;}
+.badge.avail{background:#d5f5e3;color:#1a7a47;}
+.badge.onsite{background:#d6eaf8;color:#1a5276;}
+.badge.vac{background:#fef9e7;color:#7d6608;}
+.badge.sick{background:#fde8e8;color:#922b21;}
+.badge.perm{background:#e8daef;color:#6c3483;}
+.badge.absent{background:#eaecee;color:#4a4a4a;}
+.status-select{font-size:0.78rem;border:1px solid var(--border);border-radius:6px;padding:3px 6px;font-family:inherit;cursor:pointer;}
+/* ─── REPORT FORM ─── */
+.field{margin-bottom:10px;}
+.field label{display:block;font-size:.8rem;font-weight:600;color:var(--muted);margin-bottom:4px;}
+.field input,.field textarea,.field select{width:100%;border:1.5px solid var(--border);border-radius:7px;padding:8px 10px;font-size:.95rem;font-family:inherit;background:#fff;color:var(--text);}
+.field input:focus,.field textarea:focus,.field select:focus{outline:none;border-color:var(--primary);}
+.field textarea{resize:vertical;min-height:65px;}
+.field-row{display:flex;gap:8px;}
+.field-row .field{flex:1;min-width:0;}
+table{width:100%;border-collapse:collapse;font-size:.85rem;}
+th,td{border:1px solid var(--border);padding:6px 7px;text-align:start;}
+th{background:var(--bg);font-weight:600;color:var(--dark);font-size:.78rem;}
+.table-wrap{overflow-x:auto;margin-bottom:8px;}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:5px;padding:9px 14px;border:none;border-radius:8px;font-size:.9rem;font-weight:600;font-family:inherit;cursor:pointer;transition:opacity .15s;}
+.btn:active{opacity:.8;}
+.btn.primary{background:var(--primary);color:#fff;}
+.btn.secondary{background:var(--bg);color:var(--dark);border:1px solid var(--border);}
+.btn.danger{background:#fde8e8;color:var(--danger);}
+.btn.wa{background:#25d366;color:#fff;font-size:.95rem;}
+.btn.small{padding:4px 9px;font-size:.78rem;border-radius:5px;}
+.btn-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px;}
+.msg{padding:9px 12px;border-radius:8px;font-size:.87rem;font-weight:600;margin-bottom:8px;}
+.msg.ok{background:#e8f8f0;color:#1a7a47;}
+.msg.err{background:#fde8e8;color:#c0392b;}
+.msg.info{background:var(--light);color:var(--dark);}
+/* ─── SETTINGS ─── */
+.setting-row{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+.setting-row label{flex:1;font-size:.87rem;font-weight:600;}
+.setting-row input{flex:1;border:1.5px solid var(--border);border-radius:7px;padding:7px 10px;font-size:.9rem;font-family:inherit;}
+.section-divider{font-size:.78rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin:14px 0 8px;padding-bottom:4px;border-bottom:1px solid var(--border);}
+/* ─── MOBILE ─── */
+@media(max-width:480px){
+  .login-grid{grid-template-columns:1fr 1fr;}
+  .field-row{flex-direction:column;gap:0;}
+  .stats .num{font-size:1.3rem;}
+}
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" integrity="sha512-BNaRQnYJYiPSqHHDb58B0yaPfCu+Wgds8Gp/gU33kqBtgNS4tSPHuGibyoeqMV/TJlSKda6FXzoEyYGjTe+vXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" integrity="sha512-qZvrmS2ekKPF2mSznTQsxqPgnpkI4DNTlrdUmTzrDgektczlKNRRhy5X5AAOnx5S09ydFYWWNSfcEqDTTHgtNA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+</head>
+<body>
+
+<!-- ===== LOGIN ===== -->
+<div id="login-screen">
+  <div class="login-box">
+    <button class="lang-btn" onclick="toggleLang()">EN / عر</button>
+    <div class="login-logo">🏭</div>
+    <div class="login-title" data-ar="اختر القسم" data-en="Select Department">اختر القسم</div>
+    <div class="login-sub" data-ar="ثم أدخل كلمة المرور" data-en="Then enter your password">ثم أدخل كلمة المرور</div>
+    <div class="login-grid" id="dept-grid"></div>
+    <div class="pw-area">
+      <input type="password" id="pw-input" placeholder="••••" autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()">
+      <button class="login-btn" onclick="doLogin()" data-ar="دخول" data-en="Login">دخول</button>
+    </div>
+    <div class="login-err" id="login-err"></div>
+  </div>
+</div>
+
+<!-- ===== APP ===== -->
+<div id="app-screen">
+  <header>
+    <div class="brand">
+      <span id="hdr-dept">—</span>
+      <small id="hdr-sub"></small>
+    </div>
+    <div class="hdr-right">
+      <button class="hdr-btn" onclick="toggleLang()">EN/ع</button>
+      <button class="hdr-btn" onclick="doLogout()" data-ar="خروج" data-en="Logout">خروج</button>
+    </div>
+  </header>
+  <nav id="main-nav"></nav>
+  <div id="pages">
+    <!-- HOME PAGE -->
+    <div class="page" id="page-home">
+      <div class="stats" id="stats-bar"></div>
+      <div class="card">
+        <div class="card-title" data-ar="الفنيون" data-en="Technicians">الفنيون</div>
+        <div id="member-list"></div>
+      </div>
+      <div class="card" id="dept-add-tech-card">
+        <div class="card-title" data-ar="➕ إضافة فني للقسم" data-en="➕ Add Technician">➕ إضافة فني للقسم</div>
+        <div class="setting-row">
+          <label data-ar="الاسم (English)" data-en="Name (English)">الاسم (English)</label>
+          <input type="text" id="dept-tech-name" placeholder="Full Name">
+        </div>
+        <div class="setting-row">
+          <label data-ar="الاسم بالعربي" data-en="Arabic Name">الاسم بالعربي</label>
+          <input type="text" id="dept-tech-nameAr" placeholder="الاسم">
+        </div>
+        <div class="setting-row">
+          <label data-ar="رقم الملف" data-en="File No.">رقم الملف</label>
+          <input type="text" id="dept-tech-fileno" placeholder="0000" inputmode="numeric">
+        </div>
+        <div class="setting-row">
+          <label data-ar="واتساب" data-en="WhatsApp">واتساب</label>
+          <input type="text" id="dept-tech-wa" placeholder="05xxxxxxxx" inputmode="tel">
+        </div>
+        <div class="setting-row">
+          <label data-ar="الجنسية" data-en="Nationality">الجنسية</label>
+          <input type="text" id="dept-tech-nat" placeholder="—">
+        </div>
+        <button class="btn primary" style="margin-top:10px;" onclick="addDeptTech()" data-ar="✅ إضافة" data-en="✅ Add">✅ إضافة</button>
+        <div id="dept-tech-msg" style="margin-top:8px;display:none;" class="msg ok"></div>
+      </div>
+    </div>
+    <!-- REPORT PAGE -->
+    <div class="page" id="page-report">
+      <div class="card">
+        <div class="card-title" data-ar="📋 تقرير اليوم" data-en="📋 Today's Report">📋 تقرير اليوم</div>
+        <div class="field-row">
+          <div class="field">
+            <label data-ar="التاريخ" data-en="Date">التاريخ</label>
+            <input type="date" id="r-date">
+          </div>
+          <div class="field">
+            <label data-ar="المشرف" data-en="Supervisor">المشرف</label>
+            <input type="text" id="r-supervisor" placeholder="—">
+          </div>
+        </div>
+        <div class="field">
+          <label data-ar="القسم / الموقع" data-en="Section / Site">القسم / الموقع</label>
+          <input type="text" id="r-section" placeholder="—">
+        </div>
+        <div class="field">
+          <label data-ar="رقم العقد" data-en="Contract No.">رقم العقد</label>
+          <input type="text" id="r-contract" placeholder="—">
+        </div>
+
+        <!-- Workers table -->
+        <div class="card-title" style="margin-top:10px;" data-ar="👷 العمال" data-en="👷 Workers">👷 العمال</div>
+        <div id="break-info" style="font-size:.75rem;color:var(--muted);margin-bottom:6px;"></div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr>
+              <th data-ar="رقم الملف" data-en="File No.">رقم الملف</th>
+              <th data-ar="الاسم" data-en="Name">الاسم</th>
+              <th data-ar="رقم العقد" data-en="Contract No.">رقم العقد</th>
+              <th data-ar="الحالة" data-en="Status">الحالة</th>
+              <th data-ar="بداية" data-en="Start">بداية</th>
+              <th data-ar="نهاية" data-en="End">نهاية</th>
+              <th data-ar="الساعات" data-en="Hours">الساعات</th>
+              <th></th>
+            </tr></thead>
+            <tbody id="r-workers-body"></tbody>
+          </table>
+        </div>
+        <div class="btn-row">
+          <button class="btn secondary small" onclick="addWorker()" data-ar="➕ إضافة عامل" data-en="➕ Add Worker">➕ إضافة عامل</button>
+          <button class="btn secondary small" onclick="addAllAvailable()" data-ar="إضافة المتوفرين" data-en="Add Available">إضافة المتوفرين</button>
+        </div>
+
+        <!-- Available workers today -->
+        <div class="card-title" style="margin-top:14px;" data-ar="👥 العمال المتوفرون اليوم" data-en="👥 Available Workers Today">👥 العمال المتوفرون اليوم</div>
+        <div style="display:flex;gap:8px;margin-bottom:8px;">
+          <select id="avail-select" style="flex:1;border:1.5px solid var(--border);border-radius:7px;padding:7px 10px;font-size:.87rem;font-family:inherit;">
+            <option value="" data-ar="— اختر فنياً —" data-en="— Pick a worker —">— اختر فنياً —</option>
+          </select>
+          <button class="btn secondary small" onclick="addAvailWorker()" data-ar="➕ إضافة" data-en="➕ Add">➕ إضافة</button>
+        </div>
+        <div id="avail-list" style="display:flex;flex-wrap:wrap;gap:6px;min-height:28px;margin-bottom:10px;"></div>
+
+        <!-- Report fields -->
+        <div class="field" style="margin-top:12px;">
+          <label data-ar="📅 أعمال اليوم السابق" data-en="📅 Yesterday's Completed Work">📅 أعمال اليوم السابق</label>
+          <textarea id="r-done-prev" rows="3"></textarea>
+        </div>
+        <div class="field">
+          <label data-ar="📌 الأعمال المطلوبة اليوم" data-en="📌 Today's Required Work">📌 الأعمال المطلوبة اليوم</label>
+          <textarea id="r-todo" rows="3"></textarea>
+        </div>
+        <div class="field">
+          <label data-ar="⚠️ مواد عاجلة من المستودع" data-en="⚠️ Urgent Materials from Warehouse">⚠️ مواد عاجلة من المستودع</label>
+          <textarea id="r-materials" rows="2"></textarea>
+        </div>
+        <div id="report-msg" style="display:none;" class="msg"></div>
+        <div class="btn-row">
+          <button class="btn primary" onclick="saveReport()" data-ar="💾 حفظ التقرير" data-en="💾 Save Report">💾 حفظ التقرير</button>
+          <button class="btn wa" id="btn-wa" onclick="sendWA()" disabled data-ar="📤 PDF واتساب" data-en="📤 PDF WhatsApp">📤 PDF واتساب</button>
+          <button class="btn secondary" id="btn-word" onclick="downloadWord()" disabled style="background:#2b579a;color:#fff;" data-ar="📄 Word" data-en="📄 Word">📄 Word</button>
+          <button class="btn secondary" id="btn-text" onclick="sendText()" disabled style="background:#25a244;color:#fff;" data-ar="💬 إرسال نص" data-en="💬 Send Text">💬 إرسال نص</button>
+        </div>
+      </div>
+
+      <!-- Previous reports -->
+      <div class="card" id="prev-reports-card">
+        <div class="card-title" data-ar="السجل السابق" data-en="Previous Reports">السجل السابق</div>
+        <div id="prev-reports-list"></div>
+      </div>
+    </div>
+
+    <!-- EVALUATION PAGE -->
+    <div class="page" id="page-eval">
+      <div class="card">
+        <div class="card-title" data-ar="📊 التقييم الشهري" data-en="📊 Monthly Evaluation">📊 التقييم الشهري</div>
+        <div class="field">
+          <label data-ar="الشهر" data-en="Month">الشهر</label>
+          <input type="month" id="eval-month" onchange="renderEvalList()">
+        </div>
+        <div id="eval-avg-bar"></div>
+        <div id="eval-list" class="member-list"></div>
+        <div id="eval-msg" style="margin-top:8px;display:none;" class="msg ok"></div>
+        <button class="btn primary" style="margin-top:10px;" onclick="saveAllEvaluations()" data-ar="💾 حفظ التقييمات" data-en="💾 Save Evaluations">💾 حفظ التقييمات</button>
+        <div class="btn-row">
+          <button class="btn wa" id="btn-eval-wa" onclick="sendEvalWA()" data-ar="📤 PDF واتساب" data-en="📤 PDF WhatsApp">📤 PDF واتساب</button>
+          <button class="btn secondary" id="btn-eval-text" onclick="sendEvalText()" style="background:#25a244;color:#fff;" data-ar="💬 إرسال نص" data-en="💬 Send Text">💬 إرسال نص</button>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title" data-ar="📈 سجل التقييمات" data-en="📈 Evaluation History">📈 سجل التقييمات</div>
+        <div id="eval-history-list"></div>
+      </div>
+    </div>
+
+    <!-- SETTINGS PAGE (admin only) -->
+    <div class="page" id="page-settings">
+      <div class="card">
+        <div class="card-title" data-ar="⚙️ إعدادات الأقسام" data-en="⚙️ Department Settings">⚙️ إعدادات الأقسام</div>
+        <div class="section-divider" data-ar="كلمات المرور" data-en="Passwords">كلمات المرور</div>
+        <div id="pw-settings"></div>
+
+        <div class="section-divider" style="margin-top:18px;" data-ar="أوقات الدوام الافتراضية" data-en="Default Shift Times">أوقات الدوام الافتراضية</div>
+        <div class="field-row">
+          <div class="field">
+            <label data-ar="بداية الدوام الافتراضية" data-en="Default Start Time">بداية الدوام الافتراضية</label>
+            <input type="time" id="default-checkin">
+          </div>
+          <div class="field">
+            <label data-ar="نهاية الدوام الافتراضية" data-en="Default End Time">نهاية الدوام الافتراضية</label>
+            <input type="time" id="default-checkout">
+          </div>
+        </div>
+
+        <div class="section-divider" style="margin-top:18px;" data-ar="وقت الاستراحة" data-en="Break Time">وقت الاستراحة</div>
+        <div class="setting-row">
+          <label data-ar="مدة الاستراحة (دقيقة) - تُخصم تلقائياً من ساعات العمل" data-en="Break duration (minutes) - auto-deducted from work hours">مدة الاستراحة (دقيقة) - تُخصم تلقائياً من ساعات العمل</label>
+          <input type="number" id="break-minutes" min="0" step="5" placeholder="60">
+        </div>
+
+        <button class="btn primary" style="margin-top:8px;" onclick="saveSettings()" data-ar="💾 حفظ" data-en="💾 Save">💾 حفظ</button>
+        <div id="settings-msg" style="margin-top:8px;display:none;" class="msg ok"></div>
+
+        <div class="section-divider" style="margin-top:18px;" data-ar="كلمة مرور الأدمن" data-en="Admin Password">كلمة مرور الأدمن</div>
+        <div class="setting-row">
+          <label data-ar="كلمة المرور الجديدة" data-en="New Password">كلمة المرور الجديدة</label>
+          <input type="password" id="admin-pw-new" placeholder="••••" autocomplete="new-password">
+        </div>
+        <button class="btn secondary small" onclick="saveAdminPw()" data-ar="تغيير" data-en="Change">تغيير</button>
+      </div>
+
+      <div class="card">
+        <div class="card-title" data-ar="➕ إضافة فني جديد" data-en="➕ Add Technician">➕ إضافة فني جديد</div>
+        <div class="setting-row">
+          <label data-ar="الاسم (English)" data-en="Name (English)">الاسم (English)</label>
+          <input type="text" id="add-tech-name" placeholder="Full Name">
+        </div>
+        <div class="setting-row">
+          <label data-ar="الاسم بالعربي" data-en="Arabic Name">الاسم بالعربي</label>
+          <input type="text" id="add-tech-nameAr" placeholder="الاسم">
+        </div>
+        <div class="setting-row">
+          <label data-ar="القسم" data-en="Department">القسم</label>
+          <select id="add-tech-dept">
+            <option value="electricians">⚡ كهرباء</option>
+            <option value="carpenters">🪚 نجارين</option>
+            <option value="aluminum">🔩 ألمنيوم</option>
+            <option value="tailors">🧵 خياطين</option>
+          </select>
+        </div>
+        <div class="setting-row">
+          <label data-ar="رقم الملف" data-en="File No.">رقم الملف</label>
+          <input type="text" id="add-tech-fileno" placeholder="0000" inputmode="numeric">
+        </div>
+        <div class="setting-row">
+          <label data-ar="واتساب" data-en="WhatsApp">واتساب</label>
+          <input type="text" id="add-tech-wa" placeholder="05xxxxxxxx" inputmode="tel">
+        </div>
+        <div class="setting-row">
+          <label data-ar="الجنسية" data-en="Nationality">الجنسية</label>
+          <input type="text" id="add-tech-nat" placeholder="—">
+        </div>
+        <button class="btn primary" style="margin-top:10px;" onclick="addNewTech()" data-ar="✅ إضافة فني" data-en="✅ Add Technician">✅ إضافة فني</button>
+        <div id="add-tech-msg" style="margin-top:8px;display:none;" class="msg ok"></div>
+        <div id="extra-techs-list" style="margin-top:12px;"></div>
+      </div>
+
+      <div class="card">
+        <div class="card-title" data-ar="📊 كل التقارير" data-en="📊 All Reports">📊 كل التقارير</div>
+        <div id="all-reports-list"></div>
+      </div>
+
+      <div class="card">
+        <div class="card-title" data-ar="⭐ كل التقييمات" data-en="⭐ All Evaluations">⭐ كل التقييمات</div>
+        <div id="all-eval-list"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ─────────────────────────────────────────
+// DATA
+// ─────────────────────────────────────────
+const DEPTS = [
+  { id:'electricians', ar:'كهرباء',  en:'Electricians', icon:'⚡', defaultPw:'2' },
+  { id:'carpenters',   ar:'نجارين',  en:'Carpenters',   icon:'🪚', defaultPw:'1' },
+  { id:'aluminum',     ar:'ألمنيوم', en:'Aluminum',     icon:'🔩', defaultPw:'3' },
+  { id:'tailors',      ar:'خياطين',  en:'Tailors',      icon:'🧵', defaultPw:'4' },
+];
+
+const ALL_TECHS = [
+  // ─── كهرباء ───
+  { id:'e1',  group:'electricians', fileNo:'2004', name:'Rasik Munnurkandy',          nameAr:'راسيك',                         wa:'',           nat:'—' },
+  { id:'e2',  group:'electricians', fileNo:'8116', name:'Tabarak Ali Waheed',          nameAr:'تبارك',                         wa:'',           nat:'الهند' },
+  { id:'e3',  group:'electricians', fileNo:'2045', name:'Khursheed Wali Khan',         nameAr:'خورشيد والي خان',               wa:'',           nat:'الهند' },
+  { id:'e4',  group:'electricians', fileNo:'2031', name:'Shahidul Islam Enamul Hoque', nameAr:'شهيد الإسلام إنامول الحق',      wa:'',           nat:'بنغلادش' },
+  { id:'e5',  group:'electricians', fileNo:'9323', name:'Amir Aalam',                  nameAr:'امير علام',                     wa:'',           nat:'الهند' },
+  { id:'e6',  group:'electricians', fileNo:'2027', name:'Mohammed Abdul Kader Patwary',nameAr:'محمد عبد القادر باتواري',        wa:'',           nat:'بنغلادش' },
+  { id:'e7',  group:'electricians', fileNo:'2032', name:'Hasan Uddin Eadrish Miah',    nameAr:'حسن الدين إدريش مياه',          wa:'',           nat:'بنغلادش' },
+  { id:'e8',  group:'electricians', fileNo:'2083', name:'Parwinder Singh Darshan Lal', nameAr:'بارويندر سينغ دارشان لال',      wa:'',           nat:'الهند' },
+  { id:'e9',  group:'electricians', fileNo:'2084', name:'Rampravesh Yadav Sri Kishun', nameAr:'رامبرافيش ياداف سري كيشون ياداف',wa:'',          nat:'الهند' },
+  { id:'e10', group:'electricians', fileNo:'7150', name:'Majad Fouad',                 nameAr:'ماجد فؤاد',                     wa:'',           nat:'سوري' },
+  { id:'e11', group:'electricians', fileNo:'8154', name:'Birendra Kumar',              nameAr:'برندار كمار',                   wa:'',           nat:'نيبال' },
+  { id:'e13', group:'electricians', fileNo:'8137', name:'Aftab Hussain M Ansari',       nameAr:'افتاب حسين م الانصاري',            wa:'',           nat:'الهند' },
+  { id:'e14', group:'electricians', fileNo:'9465', name:'Mosaesta Akabal',              nameAr:'موساييستا أكابال',                 wa:'',           nat:'الهند' },
+  // ─── خياطين ───
+  { id:'t1',  group:'tailors',      fileNo:'2030', name:'Jakir Zafor Ahmed',           nameAr:'جاكير ظفور أحمد',               wa:'0552361413', nat:'بنغلادش' },
+  { id:'t2',  group:'tailors',      fileNo:'6012', name:'Mir Wali Shah Qabool Shah',   nameAr:'مير والي شاه قبول شاه',         wa:'0555034182', nat:'باكستان' },
+  { id:'t6',  group:'tailors',      fileNo:'9317', name:'Fares Karam Abdelazim',        nameAr:'فارس كرم عبد العظيم',           wa:'0556317760', nat:'' },
+  { id:'t3',  group:'tailors',      fileNo:'2220', name:'Nirmol Chandra Nama',         nameAr:'نيرمول شاندرا ناما',             wa:'0554972532', nat:'بنغلادش' },
+  { id:'t4',  group:'tailors',      fileNo:'8004', name:'Muhammad Ayaz Asil Zadea',    nameAr:'محمد أياز أصيل زاديا',          wa:'0554972415', nat:'باكستان' },
+  { id:'t7',  group:'tailors',      fileNo:'9332', name:'Adel Saber Abdelwahab',        nameAr:'عادل صابر عبد الوهاب',          wa:'',           nat:'' },
+  { id:'t5',  group:'tailors',      fileNo:'2007', name:'Nuruddin Mukbul Ahammed',     nameAr:'نور الدين مقبل أحمد',           wa:'0554972458', nat:'بنغلادش' },
+  // ─── نجارين ───
+  { id:'c1',  group:'carpenters',   fileNo:'2058', name:'Maniraj Prajapati',           nameAr:'مانيراج براجاباتي',             wa:'0555034265', nat:'الهند' },
+  { id:'c2',  group:'carpenters',   fileNo:'6014', name:'Walid Abdelnaby',             nameAr:'وليد عبد النبي',                wa:'0526753719', nat:'مصر' },
+  { id:'c3',  group:'carpenters',   fileNo:'2140', name:'Roj Mohammad Miya',           nameAr:'روج محمد ميا',                  wa:'',           nat:'الهند' },
+  { id:'c4',  group:'carpenters',   fileNo:'8224', name:'Rachpal Singh',               nameAr:'راشبال سينغ',                   wa:'0586839470', nat:'الهند' },
+  { id:'c5',  group:'carpenters',   fileNo:'2057', name:'Om Prakash Chaudhary',        nameAr:'أوم براكاش تشودري',             wa:'',           nat:'نيبال' },
+  { id:'c6',  group:'carpenters',   fileNo:'9283', name:'Harkesh Sharma',              nameAr:'هركاش',                         wa:'',           nat:'الهند' },
+  { id:'c7',  group:'carpenters',   fileNo:'8015', name:'Abdullah Jan Hussain',        nameAr:'عبدالله جان حسين',              wa:'',           nat:'باكستان' },
+  { id:'c8',  group:'carpenters',   fileNo:'8021', name:'Danish Khan Saleem Khan',     nameAr:'دانيش خان سليم خان',            wa:'',           nat:'باكستان' },
+  { id:'c10', group:'carpenters',   fileNo:'8022', name:'Luqman Ali Muhammad Jamil',   nameAr:'لقمان علي محمد جميل',           wa:'',           nat:'باكستان' },
+  { id:'c11', group:'carpenters',   fileNo:'8276', name:'Santosh Kumar Sharma',        nameAr:'سانتوش كومار شارما',            wa:'',           nat:'الهند' },
+  { id:'c12', group:'carpenters',   fileNo:'8275', name:'Munna',                       nameAr:'منّا',                          wa:'',           nat:'الهند' },
+  { id:'c13', group:'carpenters',   fileNo:'9461', name:'Dheeraj Kumar',               nameAr:'ديراج كومار',                   wa:'',           nat:'الهند' },
+  // ─── ابواب ───
+  { id:'d1',  group:'aluminum',        fileNo:'2136', name:'Ravi Kumar Jamna Dass',       nameAr:'رافي كومار جامنا داس',          wa:'',           nat:'الهند' },
+  { id:'d2',  group:'aluminum',        fileNo:'8118', name:'Pravind Kumar Jaiswal',       nameAr:'برافيند كومار جايسوال',         wa:'',           nat:'الهند' },
+  { id:'d3',  group:'aluminum',        fileNo:'2147', name:'Mintu Das Sonatan Das',       nameAr:'مينتو داس سوناتان داس',         wa:'',           nat:'بنغلادش' },
+  { id:'d4',  group:'aluminum',        fileNo:'8119', name:'Zaved Aktar Safique',         nameAr:'زافيد أكتر صافي',               wa:'',           nat:'الهند' },
+  { id:'d5',  group:'aluminum',        fileNo:'2026', name:'Anamul Hoque Rofik Ahammed',  nameAr:'أنامل الحق رفيق أحمد',          wa:'',           nat:'بنغلادش' },
+  { id:'d6',  group:'aluminum',        fileNo:'8267', name:'Md Ajaz Alam',                nameAr:'مدّ أجاز عالم',                 wa:'',           nat:'الهند' },
+  { id:'d7',  group:'aluminum',        fileNo:'8266', name:'Dhanlal Yadav',               nameAr:'دهنلال ياداف',                  wa:'',           nat:'الهند' },
+  { id:'d8',  group:'aluminum',        fileNo:'8269', name:'Md Sajid',                    nameAr:'مدّ ساجد',                      wa:'',           nat:'الهند' },
+  { id:'d9',  group:'aluminum',        fileNo:'8270', name:'Mohammad Sonu',               nameAr:'محمد سونو',                     wa:'',           nat:'الهند' },
+];
+
+// ─────────────────────────────────────────
+// SAFE STORAGE (works even if localStorage is blocked/unavailable)
+// ─────────────────────────────────────────
+const _memStore = {};
+let _lsOK = true;
+try{
+  const k='__ls_test__';
+  localStorage.setItem(k,'1');
+  localStorage.removeItem(k);
+}catch(e){ _lsOK = false; }
+
+const storage = {
+  get(key){
+    if(_lsOK){
+      try{ return localStorage.getItem(key); }catch(e){ _lsOK=false; }
+    }
+    return Object.prototype.hasOwnProperty.call(_memStore,key) ? _memStore[key] : null;
+  },
+  set(key,val){
+    _memStore[key] = String(val);
+    if(_lsOK){
+      try{ localStorage.setItem(key,val); }catch(e){ _lsOK=false; }
+    }
+  },
+  remove(key){
+    delete _memStore[key];
+    if(_lsOK){
+      try{ localStorage.removeItem(key); }catch(e){ _lsOK=false; }
+    }
+  }
+};
+
+// ─────────────────────────────────────────
+// STATE
+// ─────────────────────────────────────────
+let lang = storage.get('dept_lang') || 'ar';
+let session = null;   // { deptId, role }
+let selectedDept = null;
+let reportWorkers = [];
+let availWorkers = [];
+let savedReport = null;
+
+function getExtraTechs(){
+  try { return JSON.parse(storage.get('extra_techs')||'[]'); } catch(e){ return []; }
+}
+function saveExtraTechs(arr){ storage.set('extra_techs', JSON.stringify(arr)); }
+function getAllTechs(){ return [...ALL_TECHS, ...getExtraTechs()]; }
+
+function getSettings(){
+  const s = storage.get('dept_settings');
+  if(s){
+    const obj = JSON.parse(s);
+    if(obj.breakMinutes===undefined) obj.breakMinutes = 60;
+    if(obj.defaultCheckIn===undefined) obj.defaultCheckIn = '06:30';
+    if(obj.defaultCheckOut===undefined) obj.defaultCheckOut = '17:30';
+    return obj;
+  }
+  const d = { adminPw:'123', breakMinutes:60, defaultCheckIn:'06:30', defaultCheckOut:'17:30' };
+  DEPTS.forEach(dep => { d['pw_'+dep.id] = dep.defaultPw; });
+  return d;
+}
+function saveSettingsData(obj){ storage.set('dept_settings', JSON.stringify(obj)); }
+
+function getStatuses(){
+  const s = storage.get('dept_statuses');
+  return s ? JSON.parse(s) : {};
+}
+function saveStatuses(obj){ storage.set('dept_statuses', JSON.stringify(obj)); }
+
+function getStatus(techId){
+  const st = getStatuses();
+  const s = st[techId];
+  if(!s) return { main:'factory' };
+  // Auto-clear temp if expired
+  if(s.tempEnd && new Date(s.tempEnd) < new Date()){
+    s.temp = null; s.tempEnd = null;
+    st[techId] = s; saveStatuses(st);
+  }
+  return s;
+}
+function setStatus(techId, field, value){
+  const st = getStatuses();
+  if(!st[techId]) st[techId] = { main:'factory' };
+  st[techId][field] = value;
+  saveStatuses(st);
+}
+
+function getReports(){
+  const r = storage.get('dept_reports');
+  return r ? JSON.parse(r) : [];
+}
+function saveReportData(obj){
+  const reports = getReports();
+  reports.unshift(obj);
+  if(reports.length > 200) reports.splice(200);
+  storage.set('dept_reports', JSON.stringify(reports));
+}
+
+function getEvaluations(){
+  const e = storage.get('dept_evaluations');
+  return e ? JSON.parse(e) : [];
+}
+function saveEvaluationsData(arr){ storage.set('dept_evaluations', JSON.stringify(arr)); }
+function upsertEvaluation(techId, techName, techNameAr, deptId, fileNo, month, score, note){
+  const evals = getEvaluations();
+  const key = techId + '_' + month;
+  const idx = evals.findIndex(e=>e.id===key);
+  const obj = { id:key, techId, techName, techNameAr, deptId, fileNo, month, score, note, updatedAt:new Date().toISOString() };
+  if(idx>=0) evals[idx] = obj; else evals.push(obj);
+  saveEvaluationsData(evals);
+}
+
+// ─────────────────────────────────────────
+// REPORT NUMBERING
+// ─────────────────────────────────────────
+const DEPT_PREFIX = { electricians:'E', carpenters:'C', aluminum:'A', tailors:'T' };
+
+function getNextReportNo(deptId){
+  const prefix = DEPT_PREFIX[deptId] || 'X';
+  const key = 'report_seq_' + deptId;
+  let seq = 1;
+  try { seq = parseInt(storage.get(key)||'0') + 1; } catch(e){}
+  try { storage.set(key, seq); } catch(e){}
+  return prefix + String(seq).padStart(3,'0');
+}
+
+// ─────────────────────────────────────────
+// LANGUAGE
+// ─────────────────────────────────────────
+function t(arText, enText){ return lang==='ar' ? arText : enText; }
+function statusLabel(key){
+  const map = {
+    factory:  t('مصنع','Factory'),
+    onsite:   t('موقع','On Site'),
+    vacation: t('إجازة','Vacation'),
+    sick:     t('مرض','Sick'),
+    permsite: t('موقع دائم','Perm Site'),
+    absent:   t('غياب','Absent'),
+  };
+  return map[key] || key || '—';
+}
+function applyLang(){
+  document.documentElement.lang = lang;
+  document.documentElement.dir = lang==='ar' ? 'rtl' : 'ltr';
+  document.querySelectorAll('[data-ar]').forEach(el=>{
+    el.textContent = lang==='ar' ? el.dataset.ar : el.dataset.en;
+  });
+}
+// إعادة رسم الصفحة النشطة حالياً — تُستخدم بعد تبديل اللغة وبعد كل مزامنة من السيرفر
+function refreshActivePage(){
+  const activePage = document.querySelector('.page.active');
+  if(!activePage) return;
+  if(activePage.id==='page-home') renderHome();
+  else if(activePage.id==='page-report'){ renderReportWorkers(); initAvailSelect(); renderAvailWorkers(); renderPrevReports(); }
+  else if(activePage.id==='page-eval'){ renderEvalList(); renderEvalHistory(); }
+  else if(activePage.id==='page-settings') renderSettings();
+}
+
+function toggleLang(){
+  lang = lang==='ar' ? 'en' : 'ar';
+  storage.set('dept_lang', lang);
+  applyLang();
+  if(session){
+    renderAll();
+    refreshActivePage();
+  } else buildLoginGrid();
+}
+
+// ─────────────────────────────────────────
+// LOGIN
+// ─────────────────────────────────────────
+function buildLoginGrid(){
+  const grid = document.getElementById('dept-grid');
+  grid.innerHTML = '';
+  const adminCard = document.createElement('div');
+  adminCard.className = 'login-card' + (selectedDept==='admin' ? ' sel' : '');
+  adminCard.innerHTML = `<div class="icon">🔑</div><div class="name">${t('أدمن','Admin')}</div>`;
+  adminCard.onclick = ()=>{ selectedDept='admin'; buildLoginGrid(); };
+  grid.appendChild(adminCard);
+
+  DEPTS.forEach(dep=>{
+    const card = document.createElement('div');
+    card.className = 'login-card' + (selectedDept===dep.id ? ' sel' : '');
+    card.innerHTML = `<div class="icon">${dep.icon}</div><div class="name">${lang==='ar' ? dep.ar : dep.en}</div>`;
+    card.onclick = ()=>{ selectedDept=dep.id; buildLoginGrid(); };
+    grid.appendChild(card);
+  });
+}
+
+function doLogin(){
+  const pw = document.getElementById('pw-input').value.trim();
+  const err = document.getElementById('login-err');
+  if(!selectedDept){ err.textContent = t('اختر قسماً أولاً','Select a department first'); return; }
+  const settings = getSettings();
+  if(selectedDept==='admin'){
+    if(pw !== settings.adminPw){ err.textContent = t('كلمة مرور خاطئة','Wrong password'); return; }
+    session = { deptId:'admin', role:'admin' };
+  } else {
+    const correct = settings['pw_'+selectedDept] || DEPTS.find(d=>d.id===selectedDept)?.defaultPw;
+    if(pw !== correct){ err.textContent = t('كلمة مرور خاطئة','Wrong password'); return; }
+    session = { deptId:selectedDept, role:'dept' };
+  }
+  err.textContent = '';
+  document.getElementById('pw-input').value = '';
+  document.getElementById('login-screen').style.display='none';
+  document.getElementById('app-screen').style.display='flex';
+  initApp();
+}
+
+function doLogout(){
+  session = null; selectedDept = null;
+  document.getElementById('app-screen').style.display='none';
+  document.getElementById('login-screen').style.display='flex';
+  document.getElementById('pw-input').value='';
+  buildLoginGrid();
+}
+
+// ─────────────────────────────────────────
+// APP INIT
+// ─────────────────────────────────────────
+function initApp(){
+  buildNav();
+  renderAll();
+  showPage('page-home');
+  requestNotifPermission();
+}
+
+function buildNav(){
+  const nav = document.getElementById('main-nav');
+  const tabs = [
+    { id:'page-home',     ar:'الرئيسية',  en:'Home' },
+    { id:'page-report',   ar:'التقرير',   en:'Report' },
+    { id:'page-eval',     ar:'التقييم',   en:'Evaluation' },
+  ];
+  if(session.role==='admin') tabs.push({ id:'page-settings', ar:'الضبط', en:'Settings' });
+  nav.innerHTML = '';
+  tabs.forEach(tab=>{
+    const btn = document.createElement('button');
+    btn.textContent = lang==='ar' ? tab.ar : tab.en;
+    btn.onclick = ()=>showPage(tab.id);
+    btn.dataset.page = tab.id;
+    nav.appendChild(btn);
+  });
+}
+
+function showPage(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.querySelectorAll('nav button').forEach(b=>{
+    b.classList.toggle('active', b.dataset.page===id);
+  });
+  if(id==='page-home') renderHome();
+  if(id==='page-report') renderReport();
+  if(id==='page-eval') renderEval();
+  if(id==='page-settings') renderSettings();
+}
+
+function renderAll(){
+  const dept = session.deptId==='admin' ? null : DEPTS.find(d=>d.id===session.deptId);
+  const hdrDept = document.getElementById('hdr-dept');
+  const hdrSub  = document.getElementById('hdr-sub');
+  if(dept){
+    hdrDept.textContent = lang==='ar' ? dept.ar : dept.en;
+    hdrSub.textContent  = t('إدارة الفنيين','Technician Management');
+  } else {
+    hdrDept.textContent = t('لوحة الإدارة','Admin Panel');
+    hdrSub.textContent  = t('كل الأقسام','All Departments');
+  }
+  buildNav();
+  applyLang();
+}
+
+// ─────────────────────────────────────────
+// HOME PAGE
+// ─────────────────────────────────────────
+function addDeptTech(){
+  const name   = document.getElementById('dept-tech-name').value.trim();
+  const nameAr = document.getElementById('dept-tech-nameAr').value.trim();
+  const fileNo = document.getElementById('dept-tech-fileno').value.trim();
+  const wa     = document.getElementById('dept-tech-wa').value.trim();
+  const nat    = document.getElementById('dept-tech-nat').value.trim();
+  const group  = session.deptId; // always current dept
+  const msgEl  = document.getElementById('dept-tech-msg');
+
+  if(!name && !nameAr){ msgEl.style.display='block'; msgEl.className='msg err'; msgEl.textContent=t('أدخل الاسم','Enter a name'); setTimeout(()=>msgEl.style.display='none',2500); return; }
+  if(!fileNo){ msgEl.style.display='block'; msgEl.className='msg err'; msgEl.textContent=t('أدخل رقم الملف','Enter file number'); setTimeout(()=>msgEl.style.display='none',2500); return; }
+
+  const extras = getExtraTechs();
+  if([...ALL_TECHS,...extras].find(t=>t.fileNo===fileNo)){
+    msgEl.style.display='block'; msgEl.className='msg err';
+    msgEl.textContent=t('رقم الملف موجود مسبقاً','File number already exists');
+    setTimeout(()=>msgEl.style.display='none',2500); return;
+  }
+
+  extras.push({ id:'x'+Date.now(), group, fileNo, name:name||nameAr, nameAr:nameAr||name, wa, nat });
+  saveExtraTechs(extras);
+
+  ['dept-tech-name','dept-tech-nameAr','dept-tech-fileno','dept-tech-wa','dept-tech-nat'].forEach(id=>{ document.getElementById(id).value=''; });
+  msgEl.style.display='block'; msgEl.className='msg ok';
+  msgEl.textContent=t('✓ تمت الإضافة','✓ Added');
+  setTimeout(()=>msgEl.style.display='none',2500);
+  renderHome();
+}
+
+function renderHome(){
+  const myDeptId = session.deptId;
+  const techs = myDeptId==='admin' ? getAllTechs() : getAllTechs().filter(t=>t.group===myDeptId);
+  // Show/hide dept add-tech card (hide for admin, show for dept users)
+  const deptAddCard = document.getElementById('dept-add-tech-card');
+  if(deptAddCard) deptAddCard.style.display = myDeptId==='admin' ? 'none' : '';
+
+  // Stats
+  let factory=0, onsite=0;
+  techs.forEach(tc=>{
+    const s = getStatus(tc.id);
+    if(s.main==='onsite') onsite++;
+    else factory++;
+  });
+
+  const statsBar = document.getElementById('stats-bar');
+  statsBar.innerHTML = `
+    <div class="stat"><div class="num">${techs.length}</div><div class="lbl">${t('الإجمالي','Total')}</div></div>
+    <div class="stat"><div class="num">${factory}</div><div class="lbl">${t('في المصنع','In Factory')}</div></div>
+    <div class="stat"><div class="num">${onsite}</div><div class="lbl">${t('في الموقع','On Site')}</div></div>
+  `;
+
+  // Member list
+  const listEl = document.getElementById('member-list');
+  listEl.innerHTML = '';
+
+  // Group by dept if admin
+  const groups = myDeptId==='admin' ? DEPTS : [DEPTS.find(d=>d.id===myDeptId)];
+  groups.forEach(dept=>{
+    if(!dept) return;
+    const deptTechs = techs.filter(tc=>tc.group===dept.id);
+    if(!deptTechs.length) return;
+    if(myDeptId==='admin'){
+      const hdr = document.createElement('div');
+      hdr.className = 'section-divider';
+      hdr.textContent = (lang==='ar' ? dept.ar : dept.en) + ` (${deptTechs.length})`;
+      listEl.appendChild(hdr);
+    }
+    deptTechs.forEach(tc=>{ listEl.appendChild(makeMemberRow(tc)); });
+  });
+}
+
+function makeMemberRow(tc){
+  const s = getStatus(tc.id);
+  const displayName = lang==='ar' ? tc.nameAr : tc.name;
+  const statusBadge = s.main==='onsite'
+    ? `<span class="badge onsite">${t('في الموقع','On Site')}</span>`
+    : `<span class="badge avail">${t('في المصنع','In Factory')}</span>`;
+
+  let tempBadge = '';
+  if(s.temp==='vacation')  tempBadge = `<span class="badge vac">🏖 ${t('إجازة','Vacation')}${s.tempEnd?' '+s.tempEnd:''}</span>`;
+  if(s.temp==='sick')      tempBadge = `<span class="badge sick">🤒 ${t('مرض','Sick')}${s.tempEnd?' '+s.tempEnd:''}</span>`;
+  if(s.temp==='permsite')  tempBadge = `<span class="badge perm">🏗 ${t('موقع دائم','Perm. Site')}${s.tempEnd?' '+s.tempEnd:''}</span>`;
+  if(s.temp==='absent')    tempBadge = `<span class="badge absent">🚫 ${t('غياب','Absent')}${s.tempEnd?' '+s.tempEnd:''}</span>`;
+
+  const waBtn = tc.wa
+    ? `<a href="https://wa.me/${tc.wa.replace(/\D/g,'')}" target="_blank" class="btn secondary small" style="text-decoration:none;">💬</a>`
+    : '';
+
+  const row = document.createElement('div');
+  row.className = 'member-row';
+  row.innerHTML = `
+    <div class="avatar">${tc.fileNo.slice(-2)}</div>
+    <div class="member-info">
+      <div class="member-name">${esc(tc.fileNo)} - ${esc(displayName)}</div>
+      <div class="member-sub">${esc(tc.nat)}</div>
+      <div class="member-badges">${statusBadge}${tempBadge}</div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:5px;align-items:flex-end;">
+      ${waBtn}
+      <select class="status-select" onchange="changeStatus('${tc.id}','main',this.value)">
+        <option value="factory" ${s.main!=='onsite'?'selected':''}>${t('مصنع','Factory')}</option>
+        <option value="onsite"  ${s.main==='onsite'?'selected':''}>${t('موقع','On Site')}</option>
+      </select>
+      <select class="status-select" onchange="changeTempStatus('${tc.id}',this.value)">
+        <option value="" ${!s.temp?'selected':''}>${t('— حالة —','— Status —')}</option>
+        <option value="vacation" ${s.temp==='vacation'?'selected':''}>${t('إجازة 🏖','Vacation 🏖')}</option>
+        <option value="sick"     ${s.temp==='sick'?'selected':''}>${t('مرض 🤒','Sick 🤒')}</option>
+        <option value="permsite" ${s.temp==='permsite'?'selected':''}>${t('موقع دائم 🏗','Perm Site 🏗')}</option>
+        <option value="absent"   ${s.temp==='absent'?'selected':''}>${t('غياب 🚫','Absent 🚫')}</option>
+      </select>
+    </div>
+  `;
+  return row;
+}
+
+function changeStatus(techId, field, value){
+  setStatus(techId, field, value);
+  renderHome();
+}
+
+function changeTempStatus(techId, value){
+  setStatus(techId, 'temp', value||null);
+  if(value){
+    const end = prompt(t('تاريخ انتهاء الحالة (YYYY-MM-DD) اتركه فارغاً إن لم يكن محدداً:','End date (YYYY-MM-DD), leave blank if open:'));
+    setStatus(techId, 'tempEnd', end||null);
+  } else {
+    setStatus(techId, 'tempEnd', null);
+  }
+  renderHome();
+}
+
+// ─────────────────────────────────────────
+// AVAILABLE WORKERS
+// ─────────────────────────────────────────
+function initAvailSelect(){
+  const sel = document.getElementById('avail-select');
+  if(!sel) return;
+  while(sel.options.length>1) sel.remove(1);
+  const myDeptId = session.deptId==='admin' ? null : session.deptId;
+  const techs = myDeptId ? getAllTechs().filter(tc=>tc.group===myDeptId) : getAllTechs();
+  // Only show technicians present in factory (not on-site, not on leave/sick/permsite)
+  const inFactory = techs.filter(tc=>{
+    const s = getStatus(tc.id);
+    return s.main!=='onsite' && !s.temp;
+  });
+  inFactory.forEach(tc=>{
+    const o = document.createElement('option');
+    const nm = lang==='ar' ? tc.nameAr : tc.name;
+    o.value = nm;
+    o.textContent = nm;
+    sel.appendChild(o);
+  });
+  sel.options[0].textContent = t('— المتوفرون في المصنع —','— In Factory —');
+}
+
+function addAvailWorker(){
+  const sel = document.getElementById('avail-select');
+  const name = sel.value;
+  if(!name) return;
+  if(availWorkers.includes(name)) return;
+  availWorkers.push(name);
+  sel.value='';
+  renderAvailWorkers();
+}
+
+function removeAvailWorker(name){
+  availWorkers = availWorkers.filter(n=>n!==name);
+  renderAvailWorkers();
+}
+
+function renderAvailWorkers(){
+  const el = document.getElementById('avail-list');
+  if(!el) return;
+  if(!availWorkers.length){
+    el.innerHTML=`<span style="color:var(--muted);font-size:.8rem;">${t('لا يوجد','None added')}</span>`;
+    return;
+  }
+  el.innerHTML = availWorkers.map(n=>`
+    <span style="display:inline-flex;align-items:center;gap:4px;background:var(--light);color:var(--dark);border-radius:999px;padding:3px 10px;font-size:.82rem;font-weight:600;">
+      ${esc(n)}
+      <button onclick="removeAvailWorker('${esc(n)}')" style="background:none;border:none;cursor:pointer;font-size:.88rem;color:var(--muted);">✕</button>
+    </span>
+  `).join('');
+}
+
+// ─────────────────────────────────────────
+// REPORT PAGE
+// ─────────────────────────────────────────
+function renderReport(){
+  const today = new Date().toISOString().split('T')[0];
+  document.getElementById('r-date').value = document.getElementById('r-date').value || today;
+
+  const myDeptId = session.deptId==='admin' ? 'electricians' : session.deptId;
+  const deptObj = DEPTS.find(d=>d.id===myDeptId);
+  document.getElementById('r-section').value = document.getElementById('r-section').value
+    || (lang==='ar' ? deptObj?.ar : deptObj?.en) || '';
+
+  const DEPT_SUPERVISORS = {
+    electricians: 'Rasik Munnurkandy',
+    tailors:      'Jakir Zafor Ahmed',
+    carpenters:   'Maniraj Prajapati',
+    aluminum:     'Ravi Kumar Jamna Dass',
+  };
+  const supEl = document.getElementById('r-supervisor');
+  if (!supEl.value) supEl.value = DEPT_SUPERVISORS[myDeptId] || '';
+
+  const brkInfoEl = document.getElementById('break-info');
+  if(brkInfoEl){
+    const s = getSettings();
+    const bm = parseInt(s.breakMinutes)||0;
+    const defIn = s.defaultCheckIn || '06:30';
+    const defOut = s.defaultCheckOut || '17:30';
+    const parts = [];
+    parts.push(t(`⏰ الدوام الافتراضي: ${defIn} → ${defOut}`, `⏰ Default shift: ${defIn} → ${defOut}`));
+    if(bm>0) parts.push(t(`⏱ يُخصم تلقائياً ${bm} دقيقة استراحة`, `⏱ ${bm} min break auto-deducted`));
+    parts.push(t('(من الضبط)','(from Settings)'));
+    brkInfoEl.textContent = parts.join(' · ');
+  }
+
+  if(!reportWorkers.length) initReportWorkers();
+  renderReportWorkers();
+  initAvailSelect();
+  renderAvailWorkers();
+  renderPrevReports();
+
+  const waBtn = document.getElementById('btn-wa');
+  waBtn.disabled = !savedReport;
+}
+
+function initReportWorkers(){
+  const myDeptId = session.deptId==='admin' ? null : session.deptId;
+  reportWorkers = [];
+  const techs = myDeptId ? getAllTechs().filter(tc=>tc.group===myDeptId) : [];
+  const settings = getSettings();
+  const defIn = settings.defaultCheckIn || '06:30';
+  const defOut = settings.defaultCheckOut || '17:30';
+  techs.forEach(tc=>{
+    const s = getStatus(tc.id);
+    const nm = lang==='ar' ? tc.nameAr : tc.name;
+    const statusKey = s.temp==='vacation' ? 'vacation'
+      : s.temp==='sick' ? 'sick'
+      : s.temp==='permsite' ? 'permsite'
+      : s.temp==='absent' ? 'absent'
+      : s.main==='onsite' ? 'onsite'
+      : 'factory';
+    reportWorkers.push({ techId:tc.id, name:nm, fileNo:tc.fileNo||'', contractNo:'', status:statusKey, checkIn:defIn, checkOut:defOut, hours:calcH(defIn,defOut) });
+  });
+}
+
+function addWorker(name='', ci='', co='', contractNo='', status='', fileNo=''){
+  const settings = getSettings();
+  ci = ci || settings.defaultCheckIn || '06:30';
+  co = co || settings.defaultCheckOut || '17:30';
+  reportWorkers.push({ name, fileNo, contractNo, status, checkIn:ci, checkOut:co, hours:calcH(ci,co) });
+  renderReportWorkers();
+}
+
+function addAllAvailable(){
+  const myDeptId = session.deptId==='admin' ? null : session.deptId;
+  const techs = myDeptId ? getAllTechs().filter(t=>t.group===myDeptId) : getAllTechs();
+  const settings = getSettings();
+  const defIn = settings.defaultCheckIn || '06:30';
+  const defOut = settings.defaultCheckOut || '17:30';
+  techs.forEach(tc=>{
+    const s = getStatus(tc.id);
+    if(s.main!=='onsite' && !s.temp){
+      const nm = lang==='ar' ? tc.nameAr : tc.name;
+      if(!reportWorkers.find(w=>w.techId===tc.id || w.name===nm)){
+        reportWorkers.push({ techId:tc.id, name:nm, fileNo:tc.fileNo||'', contractNo:'', status:'factory', checkIn:defIn, checkOut:defOut, hours:calcH(defIn,defOut) });
+      }
+    }
+  });
+  renderReportWorkers();
+}
+
+function calcH(ci,co){
+  if(!ci||!co) return '';
+  const [h1,m1]=ci.split(':').map(Number);
+  const [h2,m2]=co.split(':').map(Number);
+  let d=(h2*60+m2)-(h1*60+m1);
+  if(d<0) d+=1440;
+  const breakMin = parseInt(getSettings().breakMinutes)||0;
+  d -= breakMin;
+  if(d<0) d=0;
+  return (d/60).toFixed(1);
+}
+
+function renderReportWorkers(){
+  // Keep names in sync with the active language for rows linked to a technician
+  reportWorkers.forEach(w=>{
+    if(w.techId){
+      const tc = getAllTechs().find(x=>x.id===w.techId);
+      if(tc) w.name = lang==='ar' ? tc.nameAr : tc.name;
+    }
+  });
+  const tbody = document.getElementById('r-workers-body');
+  if(!reportWorkers.length){
+    tbody.innerHTML=`<tr><td colspan="7" style="text-align:center;color:var(--muted);">${t('لا يوجد عمال','No workers')}</td></tr>`;
+    return;
+  }
+  tbody.innerHTML = reportWorkers.map((w,i)=>`
+    <tr>
+      <td><input type="text" style="width:60px;border:none;outline:none;font-size:.83rem;background:transparent;" value="${esc(w.fileNo||'')}" placeholder="—" onchange="reportWorkers[${i}].fileNo=this.value"></td>
+      <td>
+        <input type="text" style="width:100%;border:none;outline:none;font-size:.85rem;" value="${esc(w.name)}"
+          placeholder="${t('الاسم','Name')}"
+          onchange="reportWorkers[${i}].name=this.value; reportWorkers[${i}].techId=null;">
+      </td>
+      <td><input type="text" style="width:80px;border:none;outline:none;font-size:.83rem;background:transparent;" value="${esc(w.contractNo||'')}" placeholder="—" onchange="reportWorkers[${i}].contractNo=this.value"></td>
+      <td>
+        <select style="border:none;font-size:.78rem;" onchange="reportWorkers[${i}].status=this.value">
+          ${['factory','onsite','vacation','sick','permsite','absent'].map(k=>`<option value="${k}" ${w.status===k?'selected':''}>${statusLabel(k)}</option>`).join('')}
+        </select>
+      </td>
+      <td><input type="time" style="border:none;font-size:.83rem;" value="${esc(w.checkIn)}" onchange="updateWTime(${i},'checkIn',this.value)"></td>
+      <td><input type="time" style="border:none;font-size:.83rem;" value="${esc(w.checkOut)}" onchange="updateWTime(${i},'checkOut',this.value)"></td>
+      <td style="text-align:center;font-weight:600;">${esc(w.hours)}</td>
+      <td><button class="btn danger small" onclick="removeWorker(${i})">✕</button></td>
+    </tr>
+  `).join('');
+}
+
+function updateWTime(i, field, value){
+  reportWorkers[i][field] = value;
+  reportWorkers[i].hours = calcH(reportWorkers[i].checkIn, reportWorkers[i].checkOut);
+  renderReportWorkers();
+}
+
+function removeWorker(i){
+  reportWorkers.splice(i,1);
+  renderReportWorkers();
+}
+
+function saveReport(){
+  try{
+    const dateEl = document.getElementById('r-date');
+    if(!dateEl.value){
+      dateEl.value = new Date().toISOString().split('T')[0];
+    }
+    const date     = dateEl.value;
+    const super_   = document.getElementById('r-supervisor').value.trim();
+    const section  = document.getElementById('r-section').value.trim();
+    const donePrev = document.getElementById('r-done-prev').value.trim();
+    const todo     = document.getElementById('r-todo').value.trim();
+    const materials= document.getElementById('r-materials').value.trim();
+
+    savedReport = {
+      id: Date.now().toString(),
+      reportNo: getNextReportNo(session.deptId),
+      date, supervisor:super_, section,
+      contractNo: (document.getElementById('r-contract')||{}).value||'',
+      deptId: session.deptId,
+      workers: [...reportWorkers],
+      availWorkers: [...availWorkers],
+      donePrev, todo, materials,
+      createdAt: new Date().toISOString(),
+    };
+    saveReportData(savedReport);
+
+    const msgEl = document.getElementById('report-msg');
+    msgEl.className='msg ok';
+    msgEl.textContent = t('✓ تم حفظ التقرير','✓ Report saved');
+    msgEl.style.display='block';
+    document.getElementById('btn-wa').disabled = false;
+    document.getElementById('btn-word').disabled = false;
+    document.getElementById('btn-text').disabled = false;
+    renderPrevReports();
+
+    // Auto-clear temp statuses after report save (day reset)
+    const st = getStatuses();
+    Object.keys(st).forEach(id=>{
+      const s = st[id];
+      if(s.temp && !s.tempEnd){ s.temp=null; saveStatuses(st); }
+    });
+  }catch(err){
+    const msgEl = document.getElementById('report-msg');
+    if(msgEl){
+      msgEl.className='msg err';
+      msgEl.textContent = t('⚠️ حدث خطأ أثناء الحفظ: ','⚠️ Error while saving: ') + (err && err.message ? err.message : err);
+      msgEl.style.display='block';
+    } else {
+      alert((t('⚠️ حدث خطأ أثناء الحفظ: ','⚠️ Error while saving: ')) + (err && err.message ? err.message : err));
+    }
+  }
+}
+
+function buildReportText(r){
+  const dept = DEPTS.find(d=>d.id===r.deptId);
+  const deptName = lang==='ar' ? (dept?.ar||r.deptId) : (dept?.en||r.deptId);
+  const lines = [
+    `📋 ${t('تقرير نهاية الدوام','End-of-Shift Report')}${r.reportNo?' '+r.reportNo:''}`,
+    `📅 ${t('التاريخ','Date')}: ${r.date}`,
+    `🏭 ${t('القسم','Dept')}: ${deptName}`,
+    `📍 ${t('الموقع','Section')}: ${r.section||'—'}`,
+    `👤 ${t('المشرف','Supervisor')}: ${r.supervisor||'—'}`,
+    '',
+    `👥 ${t('العمال المتوفرون اليوم','Available Workers Today')}:`,
+    (r.availWorkers&&r.availWorkers.length) ? r.availWorkers.join('، ') : '—',
+    '',
+    `👷 ${t('العمال','Workers')}:`,
+    ...(r.workers||[]).map(w=>[w.fileNo||'', w.name||'?', w.contractNo||'', statusLabel(w.status), w.checkIn||'', w.checkOut||''].join('\t')),
+    '',
+    `📅 ${t('أعمال اليوم السابق','Yesterday Completed')}:`,
+    r.donePrev||'—',
+    '',
+    `📌 ${t('الأعمال المطلوبة اليوم','Today Required Work')}:`,
+    r.todo||'—',
+  ];
+  if(r.materials){ lines.push('', `⚠️ ${t('مواد عاجلة','Urgent Materials')}:`, r.materials); }
+  return lines.join('\n');
+}
+
+function buildPdfContainer(r){
+  const dept = DEPTS.find(d=>d.id===r.deptId);
+  const deptName = lang==='ar' ? (dept?.ar||r.deptId) : (dept?.en||r.deptId);
+  const workersRows = (r.workers||[]).map(w=>`
+    <tr><td>${esc(w.fileNo)||'-'}</td><td>${esc(w.name)||'-'}</td><td>${esc(w.contractNo)||'-'}</td><td>${statusLabel(w.status)}</td><td>${esc(w.checkIn)||'-'}</td><td>${esc(w.checkOut)||'-'}</td><td>${esc(w.hours)||'-'}</td></tr>
+  `).join('') || '<tr><td colspan="7">-</td></tr>';
+  return `
+    <div style="font-family:Arial,sans-serif;direction:rtl;text-align:right;padding:24px 28px;background:#fff;color:#222;width:750px;">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px;">
+        <h2 style="color:#154f42;margin:0;">${t('تقرير نهاية الدوام','End-of-Shift Report')}</h2>
+        ${r.reportNo?`<span style="background:#154f42;color:#fff;font-size:1.1rem;font-weight:700;padding:4px 14px;border-radius:6px;">${r.reportNo}</span>`:''}
+      </div>
+      <table style="width:100%;border-collapse:collapse;margin-bottom:12px;font-size:13px;">
+        <tr><th style="border:1px solid #ccc;padding:5px 8px;background:#eef;">التاريخ / Date</th><td style="border:1px solid #ccc;padding:5px 8px;">${r.date}</td>
+            <th style="border:1px solid #ccc;padding:5px 8px;background:#eef;">القسم / Dept</th><td style="border:1px solid #ccc;padding:5px 8px;">${deptName}</td></tr>
+            ${r.contractNo ? `<tr><th style="border:1px solid #ccc;padding:5px 8px;background:#eef;">رقم العقد / Contract No.</th><td style="border:1px solid #ccc;padding:5px 8px;">${esc(r.contractNo)}</td></tr>` : ''}
+        <tr><th style="border:1px solid #ccc;padding:5px 8px;background:#eef;">الموقع / Section</th><td style="border:1px solid #ccc;padding:5px 8px;">${esc(r.section)||'-'}</td>
+            <th style="border:1px solid #ccc;padding:5px 8px;background:#eef;">المشرف / Supervisor</th><td style="border:1px solid #ccc;padding:5px 8px;">${esc(r.supervisor)||'-'}</td></tr>
+      </table>
+      <h3 style="color:#1e6f5c;font-size:13px;margin:10px 0 4px;">👷 ${t('العمال','Workers')}</h3>
+      <table style="width:100%;border-collapse:collapse;font-size:12px;margin-bottom:10px;">
+        <thead><tr>
+          <th style="border:1px solid #ccc;padding:4px 7px;background:#eef;">${t('رقم الملف','File No.')}</th>
+          <th style="border:1px solid #ccc;padding:4px 7px;background:#eef;">${t('الاسم','Name')}</th>
+          <th style="border:1px solid #ccc;padding:4px 7px;background:#eef;">${t('رقم العقد','Contract No.')}</th>
+          <th style="border:1px solid #ccc;padding:4px 7px;background:#eef;">${t('الحالة','Status')}</th>
+          <th style="border:1px solid #ccc;padding:4px 7px;background:#eef;">${t('دخول','In')}</th>
+          <th style="border:1px solid #ccc;padding:4px 7px;background:#eef;">${t('خروج','Out')}</th>
+          <th style="border:1px solid #ccc;padding:4px 7px;background:#eef;">${t('ساعات','Hours')}</th>
+        </tr></thead>
+        <tbody>${workersRows}</tbody>
+      </table>
+      <h3 style="color:#1e6f5c;font-size:13px;margin:10px 0 4px;">👥 ${t('العمال المتوفرون اليوم','Available Workers Today')}</h3>
+      <p style="font-size:12px;margin:0 0 8px;border:1px solid #ddd;padding:6px;min-height:24px;">${(r.availWorkers&&r.availWorkers.length)?r.availWorkers.map(esc).join(' · '):'-'}</p>
+      <h3 style="color:#1e6f5c;font-size:13px;margin:10px 0 4px;">📅 ${t('أعمال اليوم السابق','Yesterday Completed')}</h3>
+      <p style="font-size:12px;margin:0 0 8px;border:1px solid #ddd;padding:6px;min-height:30px;">${esc(r.donePrev||'-').replace(/\n/g,'<br>')}</p>
+      <h3 style="color:#1e6f5c;font-size:13px;margin:10px 0 4px;">📌 ${t('الأعمال المطلوبة اليوم','Today Required Work')}</h3>
+      <p style="font-size:12px;margin:0 0 8px;border:1px solid #ddd;padding:6px;min-height:30px;">${esc(r.todo||'-').replace(/\n/g,'<br>')}</p>
+      ${r.materials?`<h3 style="color:#c0392b;font-size:13px;margin:10px 0 4px;">⚠️ ${t('مواد عاجلة','Urgent Materials')}</h3><p style="font-size:12px;margin:0 0 8px;border:1px solid #faa;padding:6px;">${esc(r.materials).replace(/\n/g,'<br>')}</p>`:''}
+
+      <div style="margin-top:24px;border-top:1px solid #ccc;padding-top:10px;font-size:11px;color:#888;">${t('تم الإنشاء','Generated')}: ${new Date().toLocaleString('ar-SA')}</div>
+    </div>
+  `;
+}
+
+async function generatePdfBlob(r){
+  if(typeof window.jspdf==='undefined'||typeof window.html2canvas==='undefined') return null;
+  const container = document.createElement('div');
+  container.style.cssText='position:fixed;left:-9999px;top:0;';
+  container.innerHTML = buildPdfContainer(r);
+  document.body.appendChild(container);
+  try{
+    const canvas = await window.html2canvas(container.firstElementChild, {scale:2, useCORS:true, logging:false});
+    const {jsPDF} = window.jspdf;
+    const pdf = new jsPDF('p','mm','a4');
+    const pw = pdf.internal.pageSize.getWidth();
+    const ph = pdf.internal.pageSize.getHeight();
+    const iw = pw;
+    const ih = (canvas.height * iw) / canvas.width;
+    const img = canvas.toDataURL('image/png');
+    let left = ih, pos = 0;
+    pdf.addImage(img,'PNG',0,pos,iw,ih);
+    left -= ph;
+    while(left>0){ pos=left-ih; pdf.addPage(); pdf.addImage(img,'PNG',0,pos,iw,ih); left-=ph; }
+    return pdf.output('blob');
+  }finally{ document.body.removeChild(container); }
+}
+
+async function sendWA(){
+  if(!savedReport) return;
+  const btn = document.getElementById('btn-wa');
+  btn.disabled=true;
+  btn.textContent = t('⏳ جاري...','⏳ Loading...');
+  const blob = await generatePdfBlob(savedReport);
+  btn.disabled=false;
+  btn.textContent = t('📤 PDF واتساب','📤 PDF WhatsApp');
+  const title = t('تقرير نهاية الدوام','End-of-Shift Report')+' — '+(savedReport.section||'')+' — '+(savedReport.date||'');
+  const dept = DEPTS.find(d=>d.id===savedReport.deptId);
+  const safeName = (savedReport.section||savedReport.deptId||'report').replace(/[^a-zA-Z\u0600-\u06ff0-9_-]+/g,'_');
+  const fileName = 'report_'+safeName+'_'+(savedReport.date||'')+'.pdf';
+  if(blob){
+    const file = new File([blob], fileName, {type:'application/pdf'});
+    if(navigator.canShare && navigator.canShare({files:[file]})){
+      try{ await navigator.share({files:[file], title, text:title}); return; }catch(e){}
+    }
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a'); a.href=url; a.download=fileName; a.click();
+    URL.revokeObjectURL(url);
+    setTimeout(()=>window.open('https://wa.me/?text='+encodeURIComponent(title),'_blank'),500);
+  } else {
+    const text = buildReportText(savedReport);
+    window.open('https://wa.me/?text='+encodeURIComponent(text),'_blank');
+  }
+}
+
+function sendText(){
+  if(!savedReport) return;
+  const text = buildReportText(savedReport);
+  const waUrl = 'https://wa.me/?text=' + encodeURIComponent(text);
+  if(navigator.share && !navigator.userAgent.includes('Windows')){
+    navigator.share({ text }).catch(()=>{});
+  } else {
+    window.open(waUrl, '_blank');
+  }
+}
+
+async function downloadWord(){
+  if(!savedReport) return;
+  const btn = document.getElementById('btn-word');
+  btn.disabled = true;
+  btn.textContent = t('⏳ جاري...','⏳ Loading...');
+  try{
+    const r = savedReport;
+    const dept = DEPTS.find(d=>d.id===r.deptId);
+    const deptName = lang==='ar' ? (dept?.ar||r.deptId) : (dept?.en||r.deptId);
+    const workersRows = (r.workers||[]).map(w=>
+      `<tr><td style="border:1px solid #999;padding:5px;">${esc(w.fileNo)||'-'}</td>
+           <td style="border:1px solid #999;padding:5px;">${esc(w.name)||'-'}</td>
+           <td style="border:1px solid #999;padding:5px;">${esc(w.contractNo)||'-'}</td>
+           <td style="border:1px solid #999;padding:5px;">${statusLabel(w.status)}</td>
+           <td style="border:1px solid #999;padding:5px;">${esc(w.checkIn)||'-'}</td>
+           <td style="border:1px solid #999;padding:5px;">${esc(w.checkOut)||'-'}</td>
+           <td style="border:1px solid #999;padding:5px;">${esc(w.hours)||'-'}</td></tr>`
+    ).join('') || '<tr><td colspan="7" style="border:1px solid #999;padding:5px;">-</td></tr>';
+
+    const htmlBody = `
+<html xmlns:o="urn:schemas-microsoft-com:office:office"
+      xmlns:w="urn:schemas-microsoft-com:office:word"
+      xmlns="http://www.w3.org/TR/REC-html40">
+<head><meta charset="UTF-8">
+<style>
+  body{font-family:Arial,sans-serif;direction:rtl;margin:2cm;color:#222;}
+  h2{color:#154f42;margin-bottom:4px;}
+  h3{color:#1e6f5c;font-size:13px;margin:14px 0 4px;}
+  table{width:100%;border-collapse:collapse;margin-bottom:10px;font-size:12px;}
+  th{border:1px solid #999;padding:5px 8px;background:#dde;text-align:right;}
+  td{border:1px solid #999;padding:5px 8px;}
+  .rno{background:#154f42;color:#fff;padding:2px 10px;border-radius:4px;font-weight:bold;}
+  p{border:1px solid #ddd;padding:6px;min-height:20px;font-size:12px;margin:0 0 8px;}
+</style></head>
+<body>
+<div style="display:flex;justify-content:space-between;align-items:center;">
+  <h2>تقرير نهاية الدوام — End-of-Shift Report</h2>
+  ${r.reportNo?'<span class="rno">'+r.reportNo+'</span>':''}
+</div>
+<table>
+  <tr><th>التاريخ / Date</th><td>${esc(r.date)||'-'}</td><th>القسم / Dept</th><td>${esc(deptName)}</td></tr>
+  ${r.contractNo?`<tr><th>رقم العقد / Contract No.</th><td colspan="3">${esc(r.contractNo)}</td></tr>`:''}
+  <tr><th>الموقع / Section</th><td>${esc(r.section)||'-'}</td><th>المشرف / Supervisor</th><td>${esc(r.supervisor)||'-'}</td></tr>
+</table>
+<h3>👷 العمال / Workers</h3>
+<table>
+  <thead><tr>
+    <th style="border:1px solid #999;padding:5px;">رقم الملف</th>
+    <th style="border:1px solid #999;padding:5px;">الاسم</th>
+    <th style="border:1px solid #999;padding:5px;">رقم العقد</th>
+    <th style="border:1px solid #999;padding:5px;">الحالة</th>
+    <th style="border:1px solid #999;padding:5px;">دخول</th>
+    <th style="border:1px solid #999;padding:5px;">خروج</th>
+    <th style="border:1px solid #999;padding:5px;">ساعات</th>
+  </tr></thead>
+  <tbody>${workersRows}</tbody>
+</table>
+<h3>👥 العمال المتوفرون / Available Workers</h3>
+<p>${(r.availWorkers&&r.availWorkers.length)?r.availWorkers.map(esc).join(' · '):'-'}</p>
+<h3>📅 أعمال اليوم السابق / Yesterday Completed</h3>
+<p>${esc(r.donePrev||'-').replace(/\n/g,'<br>')}</p>
+<h3>📌 الأعمال المطلوبة / Today Required Work</h3>
+<p>${esc(r.todo||'-').replace(/\n/g,'<br>')}</p>
+${r.materials?`<h3 style="color:#c0392b;">⚠️ مواد عاجلة / Urgent Materials</h3><p>${esc(r.materials).replace(/\n/g,'<br>')}</p>`:''}
+<p style="font-size:10px;color:#aaa;border:none;margin-top:20px;">Generated: ${new Date().toLocaleString('ar-SA')}</p>
+</body></html>`;
+
+    const safeName = (r.section||r.deptId||'report').replace(/[^a-zA-Z؀-ۿ0-9_-]+/g,'_');
+    const fileName = (r.reportNo||'report')+'_'+safeName+'_'+(r.date||'')+'.doc';
+    const blob = new Blob([htmlBody], {type:'application/msword;charset=utf-8'});
+    const file = new File([blob], fileName, {type:'application/msword'});
+
+    // Try native share (opens WhatsApp, email, etc. on mobile)
+    if(navigator.canShare && navigator.canShare({files:[file]})){
+      try{
+        await navigator.share({files:[file], title:fileName});
+        return;
+      }catch(e){
+        if(e.name==='AbortError') return; // user cancelled
+      }
+    }
+    // Fallback: download
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a'); a.href=url; a.download=fileName; a.click();
+    URL.revokeObjectURL(url);
+    showToast(t('تم تنزيل الملف — شاركه من التنزيلات','File downloaded — share from Downloads'));
+  } finally {
+    btn.disabled = false;
+    btn.textContent = '📄 Word';
+  }
+}
+
+
+function renderPrevReports(){
+  const reports = getReports().filter(r => session.role==='admin' || r.deptId===session.deptId);
+  const el = document.getElementById('prev-reports-list');
+  if(!reports.length){
+    el.innerHTML=`<div style="color:var(--muted);font-size:.87rem;text-align:center;">${t('لا توجد تقارير','No reports yet')}</div>`;
+    return;
+  }
+  el.innerHTML = reports.slice(0,10).map(r=>{
+    const dept = DEPTS.find(d=>d.id===r.deptId);
+    const dname = lang==='ar' ? (dept?.ar||r.deptId) : (dept?.en||r.deptId);
+    return `
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid var(--border);">
+        <div>
+          <div style="font-size:.88rem;font-weight:600;">${r.reportNo?'<span style="background:#154f42;color:#fff;border-radius:4px;padding:1px 6px;font-size:.75rem;margin-left:5px;">'+esc(r.reportNo)+'</span>':''} ${esc(r.date)} · ${esc(dname)}</div>
+          <div style="font-size:.77rem;color:var(--muted);">${(r.workers||[]).length} ${t('عامل','workers')} · ${esc(r.section)||'—'}</div>
+        </div>
+        <button class="btn secondary small" onclick="viewReport('${r.id}')">👁</button>
+      </div>
+    `;
+  }).join('');
+}
+
+function viewReport(id){
+  const reports = getReports();
+  const r = reports.find(x=>x.id===id);
+  if(!r) return;
+  const text = buildReportText(r);
+  const waLink = `https://wa.me/?text=${encodeURIComponent(text)}`;
+  alert(text);
+  if(confirm(t('إرسال عبر واتساب؟','Send via WhatsApp?'))){
+    window.open(waLink,'_blank');
+  }
+}
+
+// ─────────────────────────────────────────
+// MONTHLY EVALUATION (1-10 per technician)
+// ─────────────────────────────────────────
+function getEvalForMonth(techId, month){
+  return getEvaluations().find(e=>e.techId===techId && e.month===month);
+}
+
+function renderEval(){
+  const monthInput = document.getElementById('eval-month');
+  if(monthInput && !monthInput.value){
+    monthInput.value = new Date().toISOString().slice(0,7);
+  }
+  renderEvalList();
+  renderEvalHistory();
+}
+
+function makeEvalRow(tc, month){
+  const existing = getEvalForMonth(tc.id, month);
+  const displayName = lang==='ar' ? tc.nameAr : tc.name;
+  const row = document.createElement('div');
+  row.className = 'member-row';
+  row.innerHTML = `
+    <div class="avatar">${(tc.fileNo||'').slice(-2)}</div>
+    <div class="member-info">
+      <div class="member-name">${esc(tc.fileNo)} - ${esc(displayName)}</div>
+      <div class="member-sub">${esc(tc.nat||'')}</div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:5px;align-items:flex-end;">
+      <select class="status-select eval-score-select" data-tech="${tc.id}" style="font-weight:700;">
+        <option value="">${t('— تقييم —','— Score —')}</option>
+        ${Array.from({length:10},(_,k)=>k+1).map(n=>`<option value="${n}" ${existing && Number(existing.score)===n ? 'selected':''}>${n} / 10</option>`).join('')}
+      </select>
+      <input type="text" class="eval-note-input" data-tech="${tc.id}" placeholder="${t('ملاحظة (اختياري)','Note (optional)')}" value="${esc(existing ? (existing.note||'') : '')}" style="font-size:.75rem;border:1.5px solid var(--border);border-radius:6px;padding:4px 6px;width:130px;font-family:inherit;">
+    </div>
+  `;
+  return row;
+}
+
+function renderEvalList(){
+  const monthInput = document.getElementById('eval-month');
+  if(!monthInput) return;
+  if(!monthInput.value) monthInput.value = new Date().toISOString().slice(0,7);
+  const month = monthInput.value;
+
+  const myDeptId = session.deptId==='admin' ? null : session.deptId;
+  const techs = myDeptId ? getAllTechs().filter(tc=>tc.group===myDeptId) : getAllTechs();
+
+  const listEl = document.getElementById('eval-list');
+  listEl.innerHTML = '';
+  const groups = myDeptId ? [DEPTS.find(d=>d.id===myDeptId)] : DEPTS;
+  groups.forEach(dept=>{
+    if(!dept) return;
+    const deptTechs = techs.filter(tc=>tc.group===dept.id);
+    if(!deptTechs.length) return;
+    if(!myDeptId){
+      const hdr = document.createElement('div');
+      hdr.className = 'section-divider';
+      hdr.textContent = (lang==='ar' ? dept.ar : dept.en) + ` (${deptTechs.length})`;
+      listEl.appendChild(hdr);
+    }
+    deptTechs.forEach(tc=>{ listEl.appendChild(makeEvalRow(tc, month)); });
+  });
+
+  const avgBar = document.getElementById('eval-avg-bar');
+  const monthEvals = getEvaluations().filter(e=> e.month===month && (myDeptId ? e.deptId===myDeptId : true));
+  if(monthEvals.length){
+    const avg = (monthEvals.reduce((s,e)=>s+Number(e.score),0) / monthEvals.length).toFixed(1);
+    avgBar.innerHTML = `<div class="msg info">⭐ ${t('متوسط التقييم لهذا الشهر','Average score this month')}: <b>${avg}/10</b> (${monthEvals.length} ${t('فني مُقيّم','rated')})</div>`;
+  } else {
+    avgBar.innerHTML = '';
+  }
+}
+
+function saveAllEvaluations(){
+  const monthInput = document.getElementById('eval-month');
+  const month = monthInput ? monthInput.value : '';
+  const msgEl = document.getElementById('eval-msg');
+  if(!month){
+    msgEl.style.display='block'; msgEl.className='msg err';
+    msgEl.textContent = t('اختر الشهر أولاً','Select a month first');
+    setTimeout(()=>msgEl.style.display='none',2500);
+    return;
+  }
+  const techsMap = {};
+  getAllTechs().forEach(tc=>{ techsMap[tc.id]=tc; });
+
+  let count = 0;
+  document.querySelectorAll('.eval-score-select').forEach(sel=>{
+    const techId = sel.dataset.tech;
+    const val = sel.value;
+    if(!val) return;
+    const tc = techsMap[techId];
+    if(!tc) return;
+    const noteInput = document.querySelector(`.eval-note-input[data-tech="${techId}"]`);
+    const note = noteInput ? noteInput.value.trim() : '';
+    upsertEvaluation(techId, tc.name, tc.nameAr, tc.group, tc.fileNo, month, Number(val), note);
+    count++;
+  });
+
+  msgEl.style.display='block';
+  if(count){
+    msgEl.className='msg ok';
+    msgEl.textContent = t(`✓ تم حفظ ${count} تقييم`, `✓ Saved ${count} evaluation(s)`);
+  } else {
+    msgEl.className='msg err';
+    msgEl.textContent = t('لم يتم اختيار أي تقييم','No scores selected');
+  }
+  setTimeout(()=>msgEl.style.display='none',2500);
+  renderEvalList();
+  renderEvalHistory();
+}
+
+function renderEvalHistory(){
+  const el = document.getElementById('eval-history-list');
+  if(!el) return;
+  const myDeptId = session.deptId==='admin' ? null : session.deptId;
+  let evals = getEvaluations();
+  if(myDeptId) evals = evals.filter(e=>e.deptId===myDeptId);
+  if(!evals.length){
+    el.innerHTML = `<div style="color:var(--muted);font-size:.87rem;text-align:center;">${t('لا توجد تقييمات بعد','No evaluations yet')}</div>`;
+    return;
+  }
+  evals = [...evals].sort((a,b)=> b.month.localeCompare(a.month) || b.score-a.score);
+  el.innerHTML = evals.slice(0,60).map(e=>{
+    const dept = DEPTS.find(d=>d.id===e.deptId);
+    const dname = lang==='ar' ? (dept?.ar||e.deptId) : (dept?.en||e.deptId);
+    const name = lang==='ar' ? (e.techNameAr||e.techName) : (e.techName||e.techNameAr);
+    const color = e.score>=8 ? '#1a7a47' : e.score>=5 ? '#7d6608' : '#c0392b';
+    return `
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid var(--border);">
+        <div>
+          <div style="font-size:.88rem;font-weight:600;">${esc(e.fileNo)} - ${esc(name)}${!myDeptId ? ' · '+esc(dname) : ''}</div>
+          <div style="font-size:.77rem;color:var(--muted);">${e.month}${e.note?' · '+esc(e.note):''}</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <span style="font-weight:700;color:${color};">${e.score}/10</span>
+          ${session.role==='admin' ? `<button class="btn danger small" onclick="deleteEvaluation('${e.id}')">🗑</button>` : ''}
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function deleteEvaluation(id){
+  if(!confirm(t('حذف هذا التقييم؟','Delete this evaluation?'))) return;
+  const evals = getEvaluations().filter(e=>e.id!==id);
+  saveEvaluationsData(evals);
+  renderEvalList();
+  renderEvalHistory();
+}
+
+// ─────────────────────────────────────────
+// EVALUATION — SEND VIA WHATSAPP (PDF / TEXT)
+// ─────────────────────────────────────────
+function getMonthLabel(month){
+  if(!month) return '';
+  const [y,m] = month.split('-').map(Number);
+  const namesAr = ['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
+  const namesEn = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  return lang==='ar' ? `${namesAr[m-1]||''} ${y}` : `${namesEn[m-1]||''} ${y}`;
+}
+
+function getEvalsForSend(){
+  const monthInput = document.getElementById('eval-month');
+  const month = monthInput ? monthInput.value : '';
+  const myDeptId = session.deptId==='admin' ? null : session.deptId;
+  let evals = getEvaluations().filter(e=>e.month===month);
+  if(myDeptId) evals = evals.filter(e=>e.deptId===myDeptId);
+  evals = [...evals].sort((a,b)=>{
+    const da = DEPTS.findIndex(d=>d.id===a.deptId);
+    const db = DEPTS.findIndex(d=>d.id===b.deptId);
+    if(da!==db) return da-db;
+    return b.score-a.score;
+  });
+  return { month, evals };
+}
+
+function buildEvalText(){
+  const { month, evals } = getEvalsForSend();
+  if(!evals.length) return null;
+  const lines = [
+    `⭐ ${t('تقييم الفنيين الشهري','Monthly Technician Evaluation')} — ${getMonthLabel(month)}`,
+    '',
+  ];
+  let currentDept = null;
+  evals.forEach(e=>{
+    if(e.deptId !== currentDept){
+      currentDept = e.deptId;
+      const dept = DEPTS.find(d=>d.id===e.deptId);
+      const dname = lang==='ar' ? (dept?.ar||e.deptId) : (dept?.en||e.deptId);
+      lines.push(`🏭 ${dname}:`);
+    }
+    const name = lang==='ar' ? (e.techNameAr||e.techName) : (e.techName||e.techNameAr);
+    lines.push(`  - ${e.fileNo?'[#'+e.fileNo+'] ':''}${name}: ${e.score}/10${e.note?' — '+e.note:''}`);
+  });
+  const avg = (evals.reduce((s,e)=>s+Number(e.score),0)/evals.length).toFixed(1);
+  lines.push('', `⭐ ${t('المتوسط العام','Overall Average')}: ${avg}/10 (${evals.length} ${t('فني','technicians')})`);
+  return lines.join('\n');
+}
+
+function buildEvalPdfContainer(){
+  const { month, evals } = getEvalsForSend();
+  const rows = evals.map(e=>{
+    const dept = DEPTS.find(d=>d.id===e.deptId);
+    const dname = lang==='ar' ? (dept?.ar||e.deptId) : (dept?.en||e.deptId);
+    const name = lang==='ar' ? (e.techNameAr||e.techName) : (e.techName||e.techNameAr);
+    return `<tr><td>${esc(e.fileNo)||'-'}</td><td>${esc(name)}</td><td>${esc(dname)}</td><td style="text-align:center;font-weight:700;">${esc(e.score)}/10</td><td>${esc(e.note)||'-'}</td></tr>`;
+  }).join('') || `<tr><td colspan="5">-</td></tr>`;
+  const avg = evals.length ? (evals.reduce((s,e)=>s+Number(e.score),0)/evals.length).toFixed(1) : '-';
+  return `
+    <div style="font-family:Arial,sans-serif;direction:rtl;text-align:right;padding:24px 28px;background:#fff;color:#222;width:750px;">
+      <h2 style="color:#154f42;margin:0 0 8px;">⭐ ${t('تقييم الفنيين الشهري','Monthly Technician Evaluation')}</h2>
+      <p style="font-size:14px;margin:0 0 14px;">${t('الشهر','Month')}: ${getMonthLabel(month)}</p>
+      <table style="width:100%;border-collapse:collapse;font-size:12px;margin-bottom:12px;">
+        <thead><tr>
+          <th style="border:1px solid #ccc;padding:5px 8px;background:#eef;">${t('رقم الملف','File No.')}</th>
+          <th style="border:1px solid #ccc;padding:5px 8px;background:#eef;">${t('الاسم','Name')}</th>
+          <th style="border:1px solid #ccc;padding:5px 8px;background:#eef;">${t('القسم','Dept')}</th>
+          <th style="border:1px solid #ccc;padding:5px 8px;background:#eef;">${t('التقييم','Score')}</th>
+          <th style="border:1px solid #ccc;padding:5px 8px;background:#eef;">${t('ملاحظة','Note')}</th>
+        </tr></thead>
+        <tbody>${rows}</tbody>
+      </table>
+      <p style="font-size:13px;font-weight:700;">⭐ ${t('المتوسط العام','Overall Average')}: ${avg}/10</p>
+      <div style="margin-top:24px;border-top:1px solid #ccc;padding-top:10px;font-size:11px;color:#888;">${t('تم الإنشاء','Generated')}: ${new Date().toLocaleString('ar-SA')}</div>
+    </div>
+  `;
+}
+
+async function generateEvalPdfBlob(){
+  if(typeof window.jspdf==='undefined'||typeof window.html2canvas==='undefined') return null;
+  const container = document.createElement('div');
+  container.style.cssText='position:fixed;left:-9999px;top:0;';
+  container.innerHTML = buildEvalPdfContainer();
+  document.body.appendChild(container);
+  try{
+    const canvas = await window.html2canvas(container.firstElementChild, {scale:2, useCORS:true, logging:false});
+    const {jsPDF} = window.jspdf;
+    const pdf = new jsPDF('p','mm','a4');
+    const pw = pdf.internal.pageSize.getWidth();
+    const ph = pdf.internal.pageSize.getHeight();
+    const iw = pw;
+    const ih = (canvas.height * iw) / canvas.width;
+    const img = canvas.toDataURL('image/png');
+    let left = ih, pos = 0;
+    pdf.addImage(img,'PNG',0,pos,iw,ih);
+    left -= ph;
+    while(left>0){ pos=left-ih; pdf.addPage(); pdf.addImage(img,'PNG',0,pos,iw,ih); left-=ph; }
+    return pdf.output('blob');
+  }finally{ document.body.removeChild(container); }
+}
+
+async function sendEvalWA(){
+  const { month, evals } = getEvalsForSend();
+  const msgEl = document.getElementById('eval-msg');
+  if(!month || !evals.length){
+    msgEl.style.display='block'; msgEl.className='msg err';
+    msgEl.textContent = t('لا توجد تقييمات محفوظة لهذا الشهر','No saved evaluations for this month');
+    setTimeout(()=>msgEl.style.display='none',2500);
+    return;
+  }
+  const btn = document.getElementById('btn-eval-wa');
+  btn.disabled = true;
+  btn.textContent = t('⏳ جاري...','⏳ Loading...');
+  const blob = await generateEvalPdfBlob();
+  btn.disabled = false;
+  btn.textContent = t('📤 PDF واتساب','📤 PDF WhatsApp');
+  const title = t('تقييم الفنيين الشهري','Monthly Evaluation') + ' — ' + getMonthLabel(month);
+  const fileName = 'evaluation_' + month + '.pdf';
+  if(blob){
+    const file = new File([blob], fileName, {type:'application/pdf'});
+    if(navigator.canShare && navigator.canShare({files:[file]})){
+      try{ await navigator.share({files:[file], title, text:title}); return; }catch(e){}
+    }
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a'); a.href=url; a.download=fileName; a.click();
+    URL.revokeObjectURL(url);
+    setTimeout(()=>window.open('https://wa.me/?text='+encodeURIComponent(title),'_blank'),500);
+  } else {
+    const text = buildEvalText();
+    window.open('https://wa.me/?text='+encodeURIComponent(text),'_blank');
+  }
+}
+
+function sendEvalText(){
+  const text = buildEvalText();
+  if(!text){
+    const msgEl = document.getElementById('eval-msg');
+    msgEl.style.display='block'; msgEl.className='msg err';
+    msgEl.textContent = t('لا توجد تقييمات محفوظة لهذا الشهر','No saved evaluations for this month');
+    setTimeout(()=>msgEl.style.display='none',2500);
+    return;
+  }
+  const waUrl = 'https://wa.me/?text=' + encodeURIComponent(text);
+  if(navigator.share && !navigator.userAgent.includes('Windows')){
+    navigator.share({ text }).catch(()=>{});
+  } else {
+    window.open(waUrl, '_blank');
+  }
+}
+
+// ─────────────────────────────────────────
+// SETTINGS (admin)
+// ─────────────────────────────────────────
+function addNewTech(){
+  const name   = document.getElementById('add-tech-name').value.trim();
+  const nameAr = document.getElementById('add-tech-nameAr').value.trim();
+  const group  = document.getElementById('add-tech-dept').value;
+  const fileNo = document.getElementById('add-tech-fileno').value.trim();
+  const wa     = document.getElementById('add-tech-wa').value.trim();
+  const nat    = document.getElementById('add-tech-nat').value.trim();
+  const msgEl  = document.getElementById('add-tech-msg');
+
+  if(!name && !nameAr){ msgEl.style.display='block'; msgEl.className='msg err'; msgEl.textContent=t('أدخل الاسم','Enter a name'); setTimeout(()=>msgEl.style.display='none',2500); return; }
+  if(!fileNo){ msgEl.style.display='block'; msgEl.className='msg err'; msgEl.textContent=t('أدخل رقم الملف','Enter file number'); setTimeout(()=>msgEl.style.display='none',2500); return; }
+
+  const extras = getExtraTechs();
+  // Check for duplicate fileNo
+  const allExisting = [...ALL_TECHS, ...extras];
+  if(allExisting.find(t=>t.fileNo===fileNo)){
+    msgEl.style.display='block'; msgEl.className='msg err';
+    msgEl.textContent=t('رقم الملف موجود مسبقاً','File number already exists');
+    setTimeout(()=>msgEl.style.display='none',2500); return;
+  }
+
+  const newTech = {
+    id: 'x' + Date.now(),
+    group, fileNo,
+    name: name || nameAr,
+    nameAr: nameAr || name,
+    wa, nat
+  };
+  extras.push(newTech);
+  saveExtraTechs(extras);
+
+  // Clear form
+  ['add-tech-name','add-tech-nameAr','add-tech-fileno','add-tech-wa','add-tech-nat'].forEach(id=>{
+    document.getElementById(id).value='';
+  });
+
+  msgEl.style.display='block'; msgEl.className='msg ok';
+  msgEl.textContent=t('✓ تمت الإضافة','✓ Technician added');
+  setTimeout(()=>msgEl.style.display='none',2500);
+  renderExtraTechs();
+}
+
+function removeExtraTech(id){
+  const extras = getExtraTechs().filter(t=>t.id!==id);
+  saveExtraTechs(extras);
+  renderExtraTechs();
+}
+
+function renderExtraTechs(){
+  const el = document.getElementById('extra-techs-list');
+  if(!el) return;
+  const extras = getExtraTechs();
+  if(!extras.length){ el.innerHTML=''; return; }
+  el.innerHTML = '<div class="section-divider" style="margin-top:4px;">'+t('الفنيون المضافون','Added Technicians')+'</div>' +
+    extras.map(tc=>{
+      const dept = DEPTS.find(d=>d.id===tc.group);
+      const deptLabel = dept ? (lang==='ar' ? dept.ar : dept.en) : tc.group;
+      return `<div style="display:flex;align-items:center;justify-content:space-between;padding:7px 4px;border-bottom:1px solid var(--border);">
+        <div>
+          <div style="font-weight:600;font-size:.92rem;">${esc(lang==='ar' ? tc.nameAr : tc.name)}</div>
+          <div style="font-size:.78rem;color:var(--muted);">${esc(tc.fileNo)} · ${esc(deptLabel)}${tc.nat?' · '+esc(tc.nat):''}</div>
+        </div>
+        <button onclick="removeExtraTech('${tc.id}')" style="background:#e74c3c;color:#fff;border:none;border-radius:6px;padding:4px 10px;font-size:.8rem;cursor:pointer;">🗑</button>
+      </div>`;
+    }).join('');
+}
+
+function renderSettings(){
+  const settings = getSettings();
+  const el = document.getElementById('pw-settings');
+  el.innerHTML = DEPTS.map(dep=>`
+    <div class="setting-row">
+      <label>${dep.icon} ${lang==='ar' ? dep.ar : dep.en}</label>
+      <input type="text" id="pw-${dep.id}" value="${esc(settings['pw_'+dep.id]||dep.defaultPw)}" placeholder="${t('كلمة المرور','Password')}">
+    </div>
+  `).join('');
+
+  const brkEl = document.getElementById('break-minutes');
+  if(brkEl) brkEl.value = settings.breakMinutes!==undefined ? settings.breakMinutes : 60;
+
+  const inEl = document.getElementById('default-checkin');
+  if(inEl) inEl.value = settings.defaultCheckIn || '06:30';
+  const outEl = document.getElementById('default-checkout');
+  if(outEl) outEl.value = settings.defaultCheckOut || '17:30';
+
+  renderAllReports();
+  renderExtraTechs();
+  renderAllEvaluations();
+}
+
+function saveSettings(){
+  const settings = getSettings();
+  DEPTS.forEach(dep=>{
+    const val = document.getElementById('pw-'+dep.id)?.value.trim();
+    if(val) settings['pw_'+dep.id] = val;
+  });
+  const brkVal = document.getElementById('break-minutes')?.value;
+  if(brkVal!==undefined && brkVal!=='') settings.breakMinutes = parseInt(brkVal)||0;
+  const inVal = document.getElementById('default-checkin')?.value;
+  if(inVal) settings.defaultCheckIn = inVal;
+  const outVal = document.getElementById('default-checkout')?.value;
+  if(outVal) settings.defaultCheckOut = outVal;
+  saveSettingsData(settings);
+
+  // Recalculate hours for workers currently in the report using the new break time
+  if(reportWorkers && reportWorkers.length){
+    reportWorkers.forEach(w=>{ w.hours = calcH(w.checkIn, w.checkOut); });
+    renderReportWorkers();
+  }
+
+  const msgEl = document.getElementById('settings-msg');
+  msgEl.style.display='block';
+  msgEl.textContent = t('✓ تم الحفظ','✓ Saved');
+  setTimeout(()=>{ msgEl.style.display='none'; },2000);
+}
+
+function saveAdminPw(){
+  const pw = document.getElementById('admin-pw-new').value.trim();
+  if(!pw) return;
+  const settings = getSettings();
+  settings.adminPw = pw;
+  saveSettingsData(settings);
+  document.getElementById('admin-pw-new').value='';
+  alert(t('تم تغيير كلمة المرور','Password changed'));
+}
+
+function renderAllReports(){
+  const reports = getReports();
+  const el = document.getElementById('all-reports-list');
+  if(!reports.length){
+    el.innerHTML=`<div style="color:var(--muted);font-size:.87rem;text-align:center;">${t('لا توجد تقارير','No reports yet')}</div>`;
+    return;
+  }
+  el.innerHTML = reports.slice(0,30).map(r=>{
+    const dept = DEPTS.find(d=>d.id===r.deptId);
+    const dname = lang==='ar' ? (dept?.ar||r.deptId) : (dept?.en||r.deptId);
+    return `
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid var(--border);">
+        <div>
+          <div style="font-size:.88rem;font-weight:600;">${esc(r.date)} · ${esc(dname)}</div>
+          <div style="font-size:.77rem;color:var(--muted);">${esc(r.supervisor)||'—'} · ${(r.workers||[]).length} ${t('عامل','workers')}</div>
+        </div>
+        <div style="display:flex;gap:5px;">
+          <button class="btn secondary small" onclick="viewReport('${r.id}')">👁</button>
+          <button class="btn danger small" onclick="deleteReport('${r.id}')">🗑</button>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function deleteReport(id){
+  if(!confirm(t('حذف هذا التقرير؟','Delete this report?'))) return;
+  let reports = getReports().filter(r=>r.id!==id);
+  storage.set('dept_reports', JSON.stringify(reports));
+  renderAllReports();
+  renderPrevReports();
+}
+
+function renderAllEvaluations(){
+  const el = document.getElementById('all-eval-list');
+  if(!el) return;
+  let evals = getEvaluations();
+  if(!evals.length){
+    el.innerHTML = `<div style="color:var(--muted);font-size:.87rem;text-align:center;">${t('لا توجد تقييمات بعد','No evaluations yet')}</div>`;
+    return;
+  }
+  evals = [...evals].sort((a,b)=> b.month.localeCompare(a.month) || b.score-a.score);
+  el.innerHTML = evals.slice(0,80).map(e=>{
+    const dept = DEPTS.find(d=>d.id===e.deptId);
+    const dname = lang==='ar' ? (dept?.ar||e.deptId) : (dept?.en||e.deptId);
+    const name = lang==='ar' ? (e.techNameAr||e.techName) : (e.techName||e.techNameAr);
+    const color = e.score>=8 ? '#1a7a47' : e.score>=5 ? '#7d6608' : '#c0392b';
+    return `
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid var(--border);">
+        <div>
+          <div style="font-size:.88rem;font-weight:600;">${esc(e.fileNo)} - ${esc(name)} · ${esc(dname)}</div>
+          <div style="font-size:.77rem;color:var(--muted);">${e.month}${e.note?' · '+esc(e.note):''}</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <span style="font-weight:700;color:${color};">${e.score}/10</span>
+          <button class="btn danger small" onclick="deleteEvaluationFromSettings('${e.id}')">🗑</button>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function deleteEvaluationFromSettings(id){
+  if(!confirm(t('حذف هذا التقييم؟','Delete this evaluation?'))) return;
+  const evals = getEvaluations().filter(e=>e.id!==id);
+  saveEvaluationsData(evals);
+  renderAllEvaluations();
+  renderEvalList();
+  renderEvalHistory();
+}
+
+// ─────────────────────────────────────────
+// HELPERS
+// ─────────────────────────────────────────
+function esc(s){
+  if(!s&&s!==0) return '';
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// ─────────────────────────────────────────
+// BOOT
+// ─────────────────────────────────────────
+document.addEventListener('DOMContentLoaded',()=>{
+  applyLang();
+  buildLoginGrid();
+  document.getElementById('pw-input').addEventListener('keydown', e=>{
+    if(e.key==='Enter') doLogin();
+  });
+});
+
+// ─── تنبيه إرسال التقرير الساعة 8 صباحاً ───────────────────
+function showToast(msg){
+  let t = document.getElementById('toast-msg');
+  if(!t){ t=document.createElement('div'); t.id='toast-msg';
+    t.style.cssText='position:fixed;bottom:70px;left:50%;transform:translateX(-50%);background:#333;color:#fff;padding:10px 18px;border-radius:20px;font-size:.85rem;z-index:9999;text-align:center;max-width:90%;';
+    document.body.appendChild(t); }
+  t.textContent=msg; t.style.display='block';
+  clearTimeout(t._to); t._to=setTimeout(()=>t.style.display='none',3500);
+}
+
+function requestNotifPermission(){
+  if('Notification' in window && Notification.permission === 'default'){
+    Notification.requestPermission();
+  }
+}
+
+function checkReportReminder(){
+  const now = new Date();
+  const h = now.getHours();
+  if(h < 8) return;
+  const today = now.toISOString().slice(0,10);
+  const key = 'report_reminder_sent_' + today;
+  try { if(storage.get(key)) return; } catch(e){}
+  // Browser notification
+  if('Notification' in window && Notification.permission === 'granted'){
+    new Notification('تذكير إرسال التقرير 📋', {
+      body: 'الساعة 8:00 صباحاً — لا تنسَ إرسال تقرير نهاية الدوام',
+      icon: ''
+    });
+  }
+  // In-page banner
+  let banner = document.getElementById('report-reminder-banner');
+  if(!banner){
+    banner = document.createElement('div');
+    banner.id = 'report-reminder-banner';
+    banner.style.cssText = 'position:fixed;top:0;left:0;right:0;z-index:9999;background:#e67e22;color:#fff;text-align:center;padding:12px 16px;font-size:1rem;font-weight:700;display:flex;align-items:center;justify-content:center;gap:12px;';
+    banner.innerHTML = "📋 تذكير: الساعة 8:00 صباحاً — أرسل تقرير نهاية الدوام &nbsp;<button onclick=\"document.getElementById('report-reminder-banner').remove()\" style=\"background:rgba(255,255,255,0.3);border:none;color:#fff;border-radius:6px;padding:4px 10px;cursor:pointer;font-size:.9rem;\">✕ إغلاق</button>";
+    document.body.appendChild(banner);
+    // Auto-hide after 5 minutes
+    setTimeout(()=>{ if(banner.parentNode) banner.remove(); }, 5*60*1000);
+  }
+  try { storage.set(key, '1'); } catch(e){}
+}
+
+// Start checking every 30 seconds
+setInterval(checkReportReminder, 30000);
+// Also check immediately on load (in case page opened exactly at 8)
+setTimeout(checkReportReminder, 2000);
+
+</script>
+</body>
+</html>
