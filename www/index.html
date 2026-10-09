@@ -476,8 +476,8 @@ function getAllTechs(){ return [...ALL_TECHS, ...getExtraTechs()]; }
 
 function getSettings(){
   const s = storage.get('dept_settings');
-  if(s){
-    const obj = JSON.parse(s);
+  const obj = s ? safeParse(s, null) : null;
+  if(obj && typeof obj==='object'){
     if(obj.breakMinutes===undefined) obj.breakMinutes = 60;
     if(obj.defaultCheckIn===undefined) obj.defaultCheckIn = '06:30';
     if(obj.defaultCheckOut===undefined) obj.defaultCheckOut = '17:30';
@@ -491,7 +491,8 @@ function saveSettingsData(obj){ storage.set('dept_settings', JSON.stringify(obj)
 
 function getStatuses(){
   const s = storage.get('dept_statuses');
-  return s ? JSON.parse(s) : {};
+  const o = s ? safeParse(s, null) : null;
+  return (o && typeof o==='object' && !Array.isArray(o)) ? o : {};
 }
 function saveStatuses(obj){ storage.set('dept_statuses', JSON.stringify(obj)); }
 
@@ -515,18 +516,24 @@ function setStatus(techId, field, value){
 
 function getReports(){
   const r = storage.get('dept_reports');
-  return r ? JSON.parse(r) : [];
+  const a = r ? safeParse(r, null) : null;
+  return Array.isArray(a) ? a : [];
 }
+const MAX_LOCAL_REPORTS = 500;
 function saveReportData(obj){
   const reports = getReports();
   reports.unshift(obj);
-  if(reports.length > 200) reports.splice(200);
+  if(reports.length > MAX_LOCAL_REPORTS){
+    reports.splice(MAX_LOCAL_REPORTS);
+    showToast(t('تم حذف أقدم التقارير لتجاوز الحد المسموح','Oldest reports were removed (storage limit reached)'));
+  }
   storage.set('dept_reports', JSON.stringify(reports));
 }
 
 function getEvaluations(){
   const e = storage.get('dept_evaluations');
-  return e ? JSON.parse(e) : [];
+  const a = e ? safeParse(e, null) : null;
+  return Array.isArray(a) ? a : [];
 }
 function saveEvaluationsData(arr){ storage.set('dept_evaluations', JSON.stringify(arr)); }
 function upsertEvaluation(techId, techName, techNameAr, deptId, fileNo, month, score, note){
@@ -565,7 +572,7 @@ function statusLabel(key){
     permsite: t('موقع دائم','Perm Site'),
     absent:   t('غياب','Absent'),
   };
-  return map[key] || key || '—';
+  return map[key] || esc(key) || '—';
 }
 function applyLang(){
   document.documentElement.lang = lang;
@@ -780,10 +787,10 @@ function makeMemberRow(tc){
     : `<span class="badge avail">${t('في المصنع','In Factory')}</span>`;
 
   let tempBadge = '';
-  if(s.temp==='vacation')  tempBadge = `<span class="badge vac">🏖 ${t('إجازة','Vacation')}${s.tempEnd?' '+s.tempEnd:''}</span>`;
-  if(s.temp==='sick')      tempBadge = `<span class="badge sick">🤒 ${t('مرض','Sick')}${s.tempEnd?' '+s.tempEnd:''}</span>`;
-  if(s.temp==='permsite')  tempBadge = `<span class="badge perm">🏗 ${t('موقع دائم','Perm. Site')}${s.tempEnd?' '+s.tempEnd:''}</span>`;
-  if(s.temp==='absent')    tempBadge = `<span class="badge absent">🚫 ${t('غياب','Absent')}${s.tempEnd?' '+s.tempEnd:''}</span>`;
+  if(s.temp==='vacation')  tempBadge = `<span class="badge vac">🏖 ${t('إجازة','Vacation')}${s.tempEnd?' '+esc(s.tempEnd):''}</span>`;
+  if(s.temp==='sick')      tempBadge = `<span class="badge sick">🤒 ${t('مرض','Sick')}${s.tempEnd?' '+esc(s.tempEnd):''}</span>`;
+  if(s.temp==='permsite')  tempBadge = `<span class="badge perm">🏗 ${t('موقع دائم','Perm. Site')}${s.tempEnd?' '+esc(s.tempEnd):''}</span>`;
+  if(s.temp==='absent')    tempBadge = `<span class="badge absent">🚫 ${t('غياب','Absent')}${s.tempEnd?' '+esc(s.tempEnd):''}</span>`;
 
   const waBtn = tc.wa
     ? `<a href="https://wa.me/${tc.wa.replace(/\D/g,'')}" target="_blank" class="btn secondary small" style="text-decoration:none;">💬</a>`
@@ -792,7 +799,7 @@ function makeMemberRow(tc){
   const row = document.createElement('div');
   row.className = 'member-row';
   row.innerHTML = `
-    <div class="avatar">${tc.fileNo.slice(-2)}</div>
+    <div class="avatar">${esc(String(tc.fileNo||'').slice(-2))}</div>
     <div class="member-info">
       <div class="member-name">${esc(tc.fileNo)} - ${esc(displayName)}</div>
       <div class="member-sub">${esc(tc.nat)}</div>
@@ -800,11 +807,11 @@ function makeMemberRow(tc){
     </div>
     <div style="display:flex;flex-direction:column;gap:5px;align-items:flex-end;">
       ${waBtn}
-      <select class="status-select" onchange="changeStatus('${tc.id}','main',this.value)">
+      <select class="status-select" onchange="changeStatus(${jsArg(tc.id)},'main',this.value)">
         <option value="factory" ${s.main!=='onsite'?'selected':''}>${t('مصنع','Factory')}</option>
         <option value="onsite"  ${s.main==='onsite'?'selected':''}>${t('موقع','On Site')}</option>
       </select>
-      <select class="status-select" onchange="changeTempStatus('${tc.id}',this.value)">
+      <select class="status-select" onchange="changeTempStatus(${jsArg(tc.id)},this.value)">
         <option value="" ${!s.temp?'selected':''}>${t('— حالة —','— Status —')}</option>
         <option value="vacation" ${s.temp==='vacation'?'selected':''}>${t('إجازة 🏖','Vacation 🏖')}</option>
         <option value="sick"     ${s.temp==='sick'?'selected':''}>${t('مرض 🤒','Sick 🤒')}</option>
@@ -881,7 +888,7 @@ function renderAvailWorkers(){
   el.innerHTML = availWorkers.map(n=>`
     <span style="display:inline-flex;align-items:center;gap:4px;background:var(--light);color:var(--dark);border-radius:999px;padding:3px 10px;font-size:.82rem;font-weight:600;">
       ${esc(n)}
-      <button onclick="removeAvailWorker('${esc(n)}')" style="background:none;border:none;cursor:pointer;font-size:.88rem;color:var(--muted);">✕</button>
+      <button onclick="removeAvailWorker(${jsArg(n)})" style="background:none;border:none;cursor:pointer;font-size:.88rem;color:var(--muted);">✕</button>
     </span>
   `).join('');
 }
@@ -890,7 +897,7 @@ function renderAvailWorkers(){
 // REPORT PAGE
 // ─────────────────────────────────────────
 function renderReport(){
-  const today = new Date().toISOString().split('T')[0];
+  const today = localISODate();
   document.getElementById('r-date').value = document.getElementById('r-date').value || today;
 
   const myDeptId = session.deptId==='admin' ? 'electricians' : session.deptId;
@@ -1038,7 +1045,7 @@ function saveReport(){
   try{
     const dateEl = document.getElementById('r-date');
     if(!dateEl.value){
-      dateEl.value = new Date().toISOString().split('T')[0];
+      dateEl.value = localISODate();
     }
     const date     = dateEl.value;
     const super_   = document.getElementById('r-supervisor').value.trim();
@@ -1071,10 +1078,12 @@ function saveReport(){
 
     // Auto-clear temp statuses after report save (day reset)
     const st = getStatuses();
+    let cleared = false;
     Object.keys(st).forEach(id=>{
       const s = st[id];
-      if(s.temp && !s.tempEnd){ s.temp=null; saveStatuses(st); }
+      if(s.temp && !s.tempEnd){ s.temp=null; cleared = true; }
     });
+    if(cleared) saveStatuses(st);
   }catch(err){
     const msgEl = document.getElementById('report-msg');
     if(msgEl){
@@ -1123,11 +1132,11 @@ function buildPdfContainer(r){
     <div style="font-family:Arial,sans-serif;direction:rtl;text-align:right;padding:24px 28px;background:#fff;color:#222;width:750px;">
       <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px;">
         <h2 style="color:#154f42;margin:0;">${t('تقرير نهاية الدوام','End-of-Shift Report')}</h2>
-        ${r.reportNo?`<span style="background:#154f42;color:#fff;font-size:1.1rem;font-weight:700;padding:4px 14px;border-radius:6px;">${r.reportNo}</span>`:''}
+        ${r.reportNo?`<span style="background:#154f42;color:#fff;font-size:1.1rem;font-weight:700;padding:4px 14px;border-radius:6px;">${esc(r.reportNo)}</span>`:''}
       </div>
       <table style="width:100%;border-collapse:collapse;margin-bottom:12px;font-size:13px;">
-        <tr><th style="border:1px solid #ccc;padding:5px 8px;background:#eef;">التاريخ / Date</th><td style="border:1px solid #ccc;padding:5px 8px;">${r.date}</td>
-            <th style="border:1px solid #ccc;padding:5px 8px;background:#eef;">القسم / Dept</th><td style="border:1px solid #ccc;padding:5px 8px;">${deptName}</td></tr>
+        <tr><th style="border:1px solid #ccc;padding:5px 8px;background:#eef;">التاريخ / Date</th><td style="border:1px solid #ccc;padding:5px 8px;">${esc(r.date)}</td>
+            <th style="border:1px solid #ccc;padding:5px 8px;background:#eef;">القسم / Dept</th><td style="border:1px solid #ccc;padding:5px 8px;">${esc(deptName)}</td></tr>
             ${r.contractNo ? `<tr><th style="border:1px solid #ccc;padding:5px 8px;background:#eef;">رقم العقد / Contract No.</th><td style="border:1px solid #ccc;padding:5px 8px;">${esc(r.contractNo)}</td></tr>` : ''}
         <tr><th style="border:1px solid #ccc;padding:5px 8px;background:#eef;">الموقع / Section</th><td style="border:1px solid #ccc;padding:5px 8px;">${esc(r.section)||'-'}</td>
             <th style="border:1px solid #ccc;padding:5px 8px;background:#eef;">المشرف / Supervisor</th><td style="border:1px solid #ccc;padding:5px 8px;">${esc(r.supervisor)||'-'}</td></tr>
@@ -1256,7 +1265,7 @@ async function downloadWord(){
 <body>
 <div style="display:flex;justify-content:space-between;align-items:center;">
   <h2>تقرير نهاية الدوام — End-of-Shift Report</h2>
-  ${r.reportNo?'<span class="rno">'+r.reportNo+'</span>':''}
+  ${r.reportNo?'<span class="rno">'+esc(r.reportNo)+'</span>':''}
 </div>
 <table>
   <tr><th>التاريخ / Date</th><td>${esc(r.date)||'-'}</td><th>القسم / Dept</th><td>${esc(deptName)}</td></tr>
@@ -1328,7 +1337,7 @@ function renderPrevReports(){
           <div style="font-size:.88rem;font-weight:600;">${r.reportNo?'<span style="background:#154f42;color:#fff;border-radius:4px;padding:1px 6px;font-size:.75rem;margin-left:5px;">'+esc(r.reportNo)+'</span>':''} ${esc(r.date)} · ${esc(dname)}</div>
           <div style="font-size:.77rem;color:var(--muted);">${(r.workers||[]).length} ${t('عامل','workers')} · ${esc(r.section)||'—'}</div>
         </div>
-        <button class="btn secondary small" onclick="viewReport('${r.id}')">👁</button>
+        <button class="btn secondary small" onclick="viewReport(${jsArg(r.id)})">👁</button>
       </div>
     `;
   }).join('');
@@ -1356,7 +1365,7 @@ function getEvalForMonth(techId, month){
 function renderEval(){
   const monthInput = document.getElementById('eval-month');
   if(monthInput && !monthInput.value){
-    monthInput.value = new Date().toISOString().slice(0,7);
+    monthInput.value = localISODate().slice(0,7);
   }
   renderEvalList();
   renderEvalHistory();
@@ -1368,17 +1377,17 @@ function makeEvalRow(tc, month){
   const row = document.createElement('div');
   row.className = 'member-row';
   row.innerHTML = `
-    <div class="avatar">${(tc.fileNo||'').slice(-2)}</div>
+    <div class="avatar">${esc(String(tc.fileNo||'').slice(-2))}</div>
     <div class="member-info">
       <div class="member-name">${esc(tc.fileNo)} - ${esc(displayName)}</div>
       <div class="member-sub">${esc(tc.nat||'')}</div>
     </div>
     <div style="display:flex;flex-direction:column;gap:5px;align-items:flex-end;">
-      <select class="status-select eval-score-select" data-tech="${tc.id}" style="font-weight:700;">
+      <select class="status-select eval-score-select" data-tech="${esc(tc.id)}" style="font-weight:700;">
         <option value="">${t('— تقييم —','— Score —')}</option>
         ${Array.from({length:10},(_,k)=>k+1).map(n=>`<option value="${n}" ${existing && Number(existing.score)===n ? 'selected':''}>${n} / 10</option>`).join('')}
       </select>
-      <input type="text" class="eval-note-input" data-tech="${tc.id}" placeholder="${t('ملاحظة (اختياري)','Note (optional)')}" value="${esc(existing ? (existing.note||'') : '')}" style="font-size:.75rem;border:1.5px solid var(--border);border-radius:6px;padding:4px 6px;width:130px;font-family:inherit;">
+      <input type="text" class="eval-note-input" data-tech="${esc(tc.id)}" placeholder="${t('ملاحظة (اختياري)','Note (optional)')}" value="${esc(existing ? (existing.note||'') : '')}" style="font-size:.75rem;border:1.5px solid var(--border);border-radius:6px;padding:4px 6px;width:130px;font-family:inherit;">
     </div>
   `;
   return row;
@@ -1387,7 +1396,7 @@ function makeEvalRow(tc, month){
 function renderEvalList(){
   const monthInput = document.getElementById('eval-month');
   if(!monthInput) return;
-  if(!monthInput.value) monthInput.value = new Date().toISOString().slice(0,7);
+  if(!monthInput.value) monthInput.value = localISODate().slice(0,7);
   const month = monthInput.value;
 
   const myDeptId = session.deptId==='admin' ? null : session.deptId;
@@ -1439,7 +1448,7 @@ function saveAllEvaluations(){
     if(!val) return;
     const tc = techsMap[techId];
     if(!tc) return;
-    const noteInput = document.querySelector(`.eval-note-input[data-tech="${techId}"]`);
+    const noteInput = document.querySelector(`.eval-note-input[data-tech="${CSS.escape(techId)}"]`);
     const note = noteInput ? noteInput.value.trim() : '';
     upsertEvaluation(techId, tc.name, tc.nameAr, tc.group, tc.fileNo, month, Number(val), note);
     count++;
@@ -1478,11 +1487,11 @@ function renderEvalHistory(){
       <div style="display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid var(--border);">
         <div>
           <div style="font-size:.88rem;font-weight:600;">${esc(e.fileNo)} - ${esc(name)}${!myDeptId ? ' · '+esc(dname) : ''}</div>
-          <div style="font-size:.77rem;color:var(--muted);">${e.month}${e.note?' · '+esc(e.note):''}</div>
+          <div style="font-size:.77rem;color:var(--muted);">${esc(e.month)}${e.note?' · '+esc(e.note):''}</div>
         </div>
         <div style="display:flex;align-items:center;gap:8px;">
-          <span style="font-weight:700;color:${color};">${e.score}/10</span>
-          ${session.role==='admin' ? `<button class="btn danger small" onclick="deleteEvaluation('${e.id}')">🗑</button>` : ''}
+          <span style="font-weight:700;color:${color};">${esc(e.score)}/10</span>
+          ${session.role==='admin' ? `<button class="btn danger small" onclick="deleteEvaluation(${jsArg(e.id)})">🗑</button>` : ''}
         </div>
       </div>
     `;
@@ -1712,7 +1721,7 @@ function renderExtraTechs(){
           <div style="font-weight:600;font-size:.92rem;">${esc(lang==='ar' ? tc.nameAr : tc.name)}</div>
           <div style="font-size:.78rem;color:var(--muted);">${esc(tc.fileNo)} · ${esc(deptLabel)}${tc.nat?' · '+esc(tc.nat):''}</div>
         </div>
-        <button onclick="removeExtraTech('${tc.id}')" style="background:#e74c3c;color:#fff;border:none;border-radius:6px;padding:4px 10px;font-size:.8rem;cursor:pointer;">🗑</button>
+        <button onclick="removeExtraTech(${jsArg(tc.id)})" style="background:#e74c3c;color:#fff;border:none;border-radius:6px;padding:4px 10px;font-size:.8rem;cursor:pointer;">🗑</button>
       </div>`;
     }).join('');
 }
@@ -1793,8 +1802,8 @@ function renderAllReports(){
           <div style="font-size:.77rem;color:var(--muted);">${esc(r.supervisor)||'—'} · ${(r.workers||[]).length} ${t('عامل','workers')}</div>
         </div>
         <div style="display:flex;gap:5px;">
-          <button class="btn secondary small" onclick="viewReport('${r.id}')">👁</button>
-          <button class="btn danger small" onclick="deleteReport('${r.id}')">🗑</button>
+          <button class="btn secondary small" onclick="viewReport(${jsArg(r.id)})">👁</button>
+          <button class="btn danger small" onclick="deleteReport(${jsArg(r.id)})">🗑</button>
         </div>
       </div>
     `;
@@ -1827,11 +1836,11 @@ function renderAllEvaluations(){
       <div style="display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid var(--border);">
         <div>
           <div style="font-size:.88rem;font-weight:600;">${esc(e.fileNo)} - ${esc(name)} · ${esc(dname)}</div>
-          <div style="font-size:.77rem;color:var(--muted);">${e.month}${e.note?' · '+esc(e.note):''}</div>
+          <div style="font-size:.77rem;color:var(--muted);">${esc(e.month)}${e.note?' · '+esc(e.note):''}</div>
         </div>
         <div style="display:flex;align-items:center;gap:8px;">
-          <span style="font-weight:700;color:${color};">${e.score}/10</span>
-          <button class="btn danger small" onclick="deleteEvaluationFromSettings('${e.id}')">🗑</button>
+          <span style="font-weight:700;color:${color};">${esc(e.score)}/10</span>
+          <button class="btn danger small" onclick="deleteEvaluationFromSettings(${jsArg(e.id)})">🗑</button>
         </div>
       </div>
     `;
@@ -1853,6 +1862,17 @@ function deleteEvaluationFromSettings(id){
 function esc(s){
   if(!s&&s!==0) return '';
   return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+// Safe argument for an inline handler: onclick="fn(${jsArg(value)})"
+function jsArg(v){ return esc(JSON.stringify(String(v))); }
+// Local calendar date (YYYY-MM-DD); toISOString() would return the UTC date
+function localISODate(d){
+  d = d || new Date();
+  const p = n => String(n).padStart(2,'0');
+  return d.getFullYear() + '-' + p(d.getMonth()+1) + '-' + p(d.getDate());
+}
+function safeParse(str, fallback){
+  try { return JSON.parse(str); } catch(e){ return fallback; }
 }
 
 // ─────────────────────────────────────────
@@ -1886,7 +1906,7 @@ function checkReportReminder(){
   const now = new Date();
   const h = now.getHours();
   if(h < 8) return;
-  const today = now.toISOString().slice(0,10);
+  const today = localISODate(now);
   const key = 'report_reminder_sent_' + today;
   try { if(storage.get(key)) return; } catch(e){}
   // Browser notification
